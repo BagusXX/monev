@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'kota_id',
+        'kabupaten_id',
     ];
 
     /**
@@ -44,5 +47,35 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function kota(): BelongsTo
+    {
+        return $this->belongsTo(Kota::class);
+    }
+
+    public function kabupaten(): BelongsTo
+    {
+        return $this->belongsTo(Kabupaten::class);
+    }
+
+    public function getWilayahLabelAttribute(): string
+    {
+        if ($this->relationLoaded('kota') && $this->kota) {
+            return 'Kota '.$this->kota->nama;
+        }
+        if ($this->relationLoaded('kabupaten') && $this->kabupaten) {
+            return 'Kabupaten '.$this->kabupaten->nama;
+        }
+
+        // fallback tanpa eager load
+        if ($this->kota_id && $this->kota) {
+            return 'Kota '.$this->kota->nama;
+        }
+        if ($this->kabupaten_id && $this->kabupaten) {
+            return 'Kabupaten '.$this->kabupaten->nama;
+        }
+
+        return '-';
     }
 }
