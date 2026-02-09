@@ -32,9 +32,8 @@ class MonitoringRapatController extends Controller
         $user = $request->user();
         $data['user_id'] = $user?->id;
         $data['pengisi_nama'] = $user?->name;
-        // Wilayah otomatis mengikuti user (tidak dipilih di form)
-        $data['kota_id'] = $user?->kota_id;
-        $data['kabupaten_id'] = $user?->kabupaten_id;
+        // Wilayah otomatis mengikuti user
+        $data['daerah_id'] = $user?->daerah_id;
 
         // Jika waktu tidak diisi, pakai jam saat pengisian (sesuai timezone aplikasi)
         if (!isset($data['waktu']) || $data['waktu'] === null || $data['waktu'] === '') {
@@ -42,7 +41,7 @@ class MonitoringRapatController extends Controller
         }
 
         // Normalisasi uraian: kosong -> null
-        foreach (['uraian_dptd', 'uraian_phdpd', 'uraian_pimpinan', 'uraian_bidang'] as $key) {
+        foreach (['uraian_dptd', 'uraian_phdpd', 'uraian_pimpinan', 'uraian_bidang', 'uraian_kpd', 'uraian_dewan'] as $key) {
             if (!isset($data[$key]) || $data[$key] === '') {
                 $data[$key] = null;
             }

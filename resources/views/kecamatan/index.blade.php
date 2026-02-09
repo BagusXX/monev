@@ -47,7 +47,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $kecamatan->nama }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $kecamatan->created_at->format('d/m/Y') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <a href="{{ route('kecamatan.edit', $kecamatan) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-3">Edit</a>
+                                            <a href="{{ route('kecamatan.edit', $kecamatan) }}" class="text-primary-600 dark:text-primary-400 hover:text-primary-\ dark:hover:text-primary-\ mr-3">Edit</a>
                                             <form action="{{ route('kecamatan.destroy', $kecamatan) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kecamatan ini?');">
                                                 @csrf
                                                 @method('DELETE')

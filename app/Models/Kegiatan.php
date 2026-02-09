@@ -14,9 +14,10 @@ class Kegiatan extends Model
         'bulan',
         'user_id',
         'tema',
+        'bidang',
         'tanggal_pelaksanaan',
         'nama_kegiatan',
-        'penanggung_jawab',
+        'pelaksana',
         'jumlah_peserta',
         'anggaran',
     ];

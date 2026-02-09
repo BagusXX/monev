@@ -16,52 +16,22 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Wilayah -->
+        <!-- Daerah -->
         <div class="mt-4 border rounded-lg p-4 bg-white">
-            <div class="font-semibold text-gray-800 mb-1">Wilayah</div>
-            <p class="text-sm text-gray-500 mb-3">Pilih asal wilayah (Kota/Kabupaten) sesuai data yang tersedia.</p>
+            <div class="font-semibold text-gray-800 mb-1">Daerah</div>
+            <p class="text-sm text-gray-500 mb-3">Pilih asal daerah sesuai data yang tersedia.</p>
 
-            <div class="flex flex-wrap gap-6">
-                <label class="flex items-center gap-2 text-sm text-gray-700">
-                    <input type="radio" name="jenis_wilayah" value="kota"
-                        {{ old('jenis_wilayah') === 'kota' ? 'checked' : '' }}
-                        onclick="toggleWilayah('kota')">
-                    Kota
-                </label>
-                <label class="flex items-center gap-2 text-sm text-gray-700">
-                    <input type="radio" name="jenis_wilayah" value="kabupaten"
-                        {{ old('jenis_wilayah') === 'kabupaten' ? 'checked' : '' }}
-                        onclick="toggleWilayah('kabupaten')">
-                    Kabupaten
-                </label>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-                <div id="pilihKota" class="hidden">
-                    <x-input-label for="kota_id" :value="__('Kota')" />
-                    <select id="kota_id" name="kota_id" class="block mt-1 w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
-                        <option value="">- Pilih Kota -</option>
-                        @foreach(($kotas ?? []) as $kota)
-                            <option value="{{ $kota->id }}" {{ (string)old('kota_id') === (string)$kota->id ? 'selected' : '' }}>
-                                {{ $kota->nama }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <x-input-error :messages="$errors->get('kota_id')" class="mt-2" />
-                </div>
-
-                <div id="pilihKabupaten" class="hidden">
-                    <x-input-label for="kabupaten_id" :value="__('Kabupaten')" />
-                    <select id="kabupaten_id" name="kabupaten_id" class="block mt-1 w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
-                        <option value="">- Pilih Kabupaten -</option>
-                        @foreach(($kabupatens ?? []) as $kabupaten)
-                            <option value="{{ $kabupaten->id }}" {{ (string)old('kabupaten_id') === (string)$kabupaten->id ? 'selected' : '' }}>
-                                {{ $kabupaten->nama }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <x-input-error :messages="$errors->get('kabupaten_id')" class="mt-2" />
-                </div>
+            <div>
+                <x-input-label for="daerah_id" :value="__('Daerah')" />
+                <select id="daerah_id" name="daerah_id" class="block mt-1 w-full rounded-md border-gray-300 focus:border-primary-600 focus:ring-primary-500">
+                    <option value="">- Pilih Daerah -</option>
+                    @foreach(($daerahs ?? []) as $daerah)
+                        <option value="{{ $daerah->id }}" {{ (string)old('daerah_id') === (string)$daerah->id ? 'selected' : '' }}>
+                            {{ $daerah->nama }} - {{ $daerah->kode }}
+                        </option>
+                    @endforeach
+                </select>
+                <x-input-error :messages="$errors->get('daerah_id')" class="mt-2" />
             </div>
         </div>
 
@@ -89,7 +59,7 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
             </a>
 
@@ -99,27 +69,4 @@
         </div>
     </form>
 
-    <script>
-        function toggleWilayah(jenis) {
-            const kotaBox = document.getElementById('pilihKota');
-            const kabBox = document.getElementById('pilihKabupaten');
-            const kotaSelect = document.getElementById('kota_id');
-            const kabSelect = document.getElementById('kabupaten_id');
-
-            if (jenis === 'kota') {
-                kotaBox.classList.remove('hidden');
-                kabBox.classList.add('hidden');
-                kabSelect.value = '';
-            } else {
-                kabBox.classList.remove('hidden');
-                kotaBox.classList.add('hidden');
-                kotaSelect.value = '';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const jenis = document.querySelector('input[name="jenis_wilayah"]:checked')?.value;
-            if (jenis) toggleWilayah(jenis);
-        });
-    </script>
-</x-guest-layout>
+    </x-guest-layout>

@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
-use App\Models\Kabupaten;
-use App\Models\Kota;
+use App\Models\Daerah;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
@@ -27,9 +26,8 @@ class UserController extends Controller
      */
     public function create(): View
     {
-        $kotas = Kota::query()->orderBy('nama')->get();
-        $kabupatens = Kabupaten::query()->orderBy('nama')->get();
-        return view('setup.create-user', compact('kotas', 'kabupatens'));
+        $daerahs = Daerah::query()->orderBy('nama')->get();
+        return view('setup.create-user', compact('daerahs'));
     }
 
     /**
@@ -37,15 +35,12 @@ class UserController extends Controller
      */
     public function store(UserStoreRequest $request): RedirectResponse
     {
-        $kotaId = $request->input('kota_id');
-        $kabId = $request->input('kabupaten_id');
-
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'kota_id' => $kotaId ?: null,
-            'kabupaten_id' => $kotaId ? null : ($kabId ?: null),
+            'daerah_id' => $request->input('daerah_id'),
+            'is_approved' => true,
         ]);
 
         return redirect()->route('setup')
@@ -57,9 +52,8 @@ class UserController extends Controller
      */
     public function edit(User $user): View
     {
-        $kotas = Kota::query()->orderBy('nama')->get();
-        $kabupatens = Kabupaten::query()->orderBy('nama')->get();
-        return view('setup.edit-user', compact('user', 'kotas', 'kabupatens'));
+        $daerahs = Daerah::query()->orderBy('nama')->get();
+        return view('setup.edit-user', compact('user', 'daerahs'));
     }
 
     /**
@@ -67,14 +61,10 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user): RedirectResponse
     {
-        $kotaId = $request->input('kota_id');
-        $kabId = $request->input('kabupaten_id');
-
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'kota_id' => $kotaId ?: null,
-            'kabupaten_id' => $kotaId ? null : ($kabId ?: null),
+            'daerah_id' => $request->input('daerah_id'),
         ];
 
         if ($request->filled('password')) {
@@ -96,5 +86,37 @@ class UserController extends Controller
 
         return redirect()->route('setup')
             ->with('success', 'User berhasil dihapus.');
+    }
+
+    /**
+     * Approve a pending user (only accessible by main admin via UI).
+     */
+    public function approve(User $user): RedirectResponse
+    {
+        // only main admin can approve
+        if (!auth()->user() || !auth()->user()->is_main_admin) {
+            abort(403);
+        }
+
+        $user->update(['is_approved' => true]);
+
+        return redirect()->route('setup')
+            ->with('success', 'User berhasil disetujui.');
+    }
+
+    /**
+     * Reject a pending user (only accessible by main admin via UI).
+     */
+    public function reject(User $user): RedirectResponse
+    {
+        // only main admin can reject
+        if (!auth()->user() || !auth()->user()->is_main_admin) {
+            abort(403);
+        }
+
+        $user->update(['is_rejected' => true, 'is_approved' => false]);
+
+        return redirect()->route('setup')
+            ->with('success', 'User berhasil ditolak.');
     }
 }

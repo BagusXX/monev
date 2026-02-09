@@ -53,7 +53,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $kabupaten->created_at->format('d/m/Y') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center">
                                             <div class="flex items-center justify-center gap-3">
-                                                <a href="{{ route('kabupaten.edit', $kabupaten) }}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition font-medium text-xs">
+                                                <a href="{{ route('kabupaten.edit', $kabupaten) }}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-primary-100 text-primary-700 rounded-lg hover:bg-primary-200 transition font-medium text-xs">
                                                     <span>✏️</span> Edit
                                                 </a>
                                                 <form action="{{ route('kabupaten.destroy', $kabupaten) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kabupaten ini?');">

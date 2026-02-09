@@ -24,7 +24,16 @@ class MonitoringKegiatanController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('monitoring.kegiatan', compact('bulan', 'kegiatans'));
+        // compute readable bulan label
+        try {
+            $bulanLabel = Carbon::createFromFormat('Y-m', $bulan)
+                ->locale('id')
+                ->translatedFormat('F Y');
+        } catch (\Throwable $e) {
+            $bulanLabel = $bulan;
+        }
+
+        return view('monitoring.kegiatan', compact('bulan', 'bulanLabel', 'kegiatans'));
     }
 
     public function store(KegiatanStoreRequest $request): RedirectResponse
@@ -54,12 +63,12 @@ class MonitoringKegiatanController extends Controller
                 'bulan' => $bulanForRow,
                 'user_id' => $userId,
                 'tema' => $row['tema'],
+                'bidang' => $row['bidang'],
                 'tanggal_pelaksanaan' => $row['tanggal_pelaksanaan'],
                 'nama_kegiatan' => $row['nama_kegiatan'],
-                'penanggung_jawab' => $row['penanggung_jawab'],
+                'pelaksana' => $row['pelaksana'],
                 'jumlah_peserta' => (int) ($row['jumlah_peserta'] ?? 0),
                 'anggaran' => (int) ($row['anggaran'] ?? 0),
-                'uraian' => $row['uraian'] ?? null, // simpan keterangan
             ]);
 
             $savedCount++;

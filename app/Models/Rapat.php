@@ -13,8 +13,7 @@ class Rapat extends Model
     protected $fillable = [
         'user_id',
         'pengisi_nama',
-        'kota_id',
-        'kabupaten_id',
+        'daerah_id',
         'bulan',
         'tanggal',
         'waktu',
@@ -26,6 +25,10 @@ class Rapat extends Model
         'uraian_pimpinan',
         'rapat_bidang',
         'uraian_bidang',
+        'rapat_kpd',
+        'uraian_kpd',
+        'rapat_dewan',
+        'uraian_dewan',
     ];
 
     protected $casts = [
@@ -34,6 +37,8 @@ class Rapat extends Model
         'rapat_phdpd' => 'boolean',
         'rapat_pimpinan' => 'boolean',
         'rapat_bidang' => 'boolean',
+        'rapat_kpd' => 'boolean',
+        'rapat_dewan' => 'boolean',
     ];
 
     public function user(): BelongsTo
@@ -41,14 +46,9 @@ class Rapat extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function kota(): BelongsTo
+    public function daerah(): BelongsTo
     {
-        return $this->belongsTo(Kota::class);
-    }
-
-    public function kabupaten(): BelongsTo
-    {
-        return $this->belongsTo(Kabupaten::class);
+        return $this->belongsTo(Daerah::class);
     }
 }
 

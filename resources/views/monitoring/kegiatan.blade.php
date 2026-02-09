@@ -7,7 +7,7 @@
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Input & kelola daftar kegiatan bulanan</p>
             </div>
-            <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">{{ $bulan ?? 'Bulan Berjalan' }}</span>
+            <span class="px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-xs font-semibold">{{ $bulanLabel ?? 'Bulan Berjalan' }}</span>
         </div>
     </x-slot>
 
@@ -47,14 +47,15 @@
             {{-- Tombol untuk menampilkan / menyembunyikan form --}}
             @php
                 // ambil old rows (sama seperti sebelumnya)
-                $oldRows = old('kegiatan', [['tema' => '', 'tanggal_pelaksanaan' => '', 'nama_kegiatan' => '', 'penanggung_jawab' => '', 'jumlah_peserta' => 0, 'anggaran' => 0]]);
+                $oldRows = old('kegiatan', [['tema' => '', 'bidang' => '', 'tanggal_pelaksanaan' => '', 'nama_kegiatan' => '', 'pelaksana' => '', 'jumlah_peserta' => 0, 'anggaran' => 0]]);
                 if (empty($oldRows)) {
-                    $oldRows = [['tema' => '', 'tanggal_pelaksanaan' => '', 'nama_kegiatan' => '', 'penanggung_jawab' => '', 'jumlah_peserta' => 0, 'anggaran' => 0]];
+                    $oldRows = [['tema' => '', 'bidang' => '', 'tanggal_pelaksanaan' => '', 'nama_kegiatan' => '', 'pelaksana' => '', 'jumlah_peserta' => 0, 'anggaran' => 0]];
                 }
                 // tentukan apakah ada old input yang bermakna (supaya form terbuka ketika validasi gagal)
                 $hasOldInput = old('kegiatan') && collect(old('kegiatan'))->filter(function ($r) {
                     return (!empty($r['nama_kegiatan'] ?? '')) ||
-                           (!empty($r['penanggung_jawab'] ?? '')) ||
+                           (!empty($r['bidang'] ?? '')) ||
+                           (!empty($r['pelaksana'] ?? '')) ||
                            (!empty($r['tanggal_pelaksanaan'] ?? '')) ||
                            (!empty($r['anggaran'] ?? 0)) ||
                            (!empty($r['jumlah_peserta'] ?? 0));
@@ -81,7 +82,7 @@
                     </div>
                 </div>
 
-                <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700 flex items-start gap-2">
+                <div class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-700 flex items-start gap-2">
                     <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zm-11-1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"/></svg>
                     <div>
                         <strong>💡 Tips:</strong> Format angka seperti <span class="font-mono bg-white px-2 py-1 rounded">2.500.000</span> akan otomatis dirapi.
@@ -95,9 +96,9 @@
 
                         <div id="kegiatan-rows" class="space-y-5">
                             @foreach ($oldRows as $idx => $row)
-                                <div class="kegiatan-row border-2 border-blue-200 rounded-lg p-5 bg-gradient-to-br from-blue-50 to-indigo-50 hover:shadow-md transition" data-index="{{ $idx }}">
+                                <div class="kegiatan-row border-2 border-yellow-200 rounded-lg p-5 bg-gradient-to-br from-yellow-50 to-amber-50 hover:shadow-md transition" data-index="{{ $idx }}">
                                     <div class="flex justify-between items-center mb-4">
-                                        <span class="text-sm font-bold text-blue-700 bg-blue-100 px-3 py-1 rounded-full">🏷️ Kegiatan #{{ $idx + 1 }}</span>
+                                        <span class="text-sm font-bold text-yellow-700 bg-yellow-100 px-3 py-1 rounded-full">🏷️ Kegiatan #{{ $idx + 1 }}</span>
                                         <button type="button" class="kegiatan-row-remove text-red-600 hover:text-red-800 text-sm font-semibold hidden transition"
                                             aria-label="Hapus baris">
                                             <span>❌ Hapus</span>
@@ -107,7 +108,7 @@
                                         <div class="md:col-span-2">
                                             <label class="text-sm font-semibold text-gray-700 block mb-2">📌 Tema Utama <span class="text-red-500">*</span></label>
                                             <select name="kegiatan[{{ $idx }}][tema]" required
-                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition">
+                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition">
                                                 <option value="" disabled {{ ($row['tema'] ?? '') ? '' : 'selected' }}>-- Pilih tema --</option>
                                                 <option value="kaderisasi" {{ ($row['tema'] ?? '') === 'kaderisasi' ? 'selected' : '' }}>🎓 Kaderisasi</option>
                                                 <option value="strukturisasi" {{ ($row['tema'] ?? '') === 'strukturisasi' ? 'selected' : '' }}>🏢 Strukturisasi</option>
@@ -115,31 +116,37 @@
                                             </select>
                                         </div>
                                         <div>
+                                            <label class="text-sm font-semibold text-gray-700 block mb-2">🏛️ Bidang <span class="text-red-500">*</span></label>
+                                            <input type="text" name="kegiatan[{{ $idx }}][bidang]" value="{{ $row['bidang'] ?? '' }}" required
+                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
+                                                placeholder="Contoh: Bidang Organisasi" />
+                                        </div>
+                                        <div>
                                             <label class="text-sm font-semibold text-gray-700 block mb-2">📅 Tanggal Pelaksanaan <span class="text-red-500">*</span></label>
                                             <input type="date" name="kegiatan[{{ $idx }}][tanggal_pelaksanaan]" value="{{ $row['tanggal_pelaksanaan'] ?? '' }}" required
-                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition" />
+                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition" />
                                         </div>
                                         <div>
                                             <label class="text-sm font-semibold text-gray-700 block mb-2">🎯 Nama Kegiatan <span class="text-red-500">*</span></label>
                                             <input type="text" name="kegiatan[{{ $idx }}][nama_kegiatan]" value="{{ $row['nama_kegiatan'] ?? '' }}" required
-                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
                                                 placeholder="Contoh: Rapat Koordinasi Bulanan" />
                                         </div>
                                         <div>
-                                            <label class="text-sm font-semibold text-gray-700 block mb-2">👤 Penanggung Jawab <span class="text-red-500">*</span></label>
-                                            <input type="text" name="kegiatan[{{ $idx }}][penanggung_jawab]" value="{{ $row['penanggung_jawab'] ?? '' }}" required
-                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
-                                                placeholder="Nama penanggung jawab" />
+                                            <label class="text-sm font-semibold text-gray-700 block mb-2">👤 Pelaksana <span class="text-red-500">*</span></label>
+                                            <input type="text" name="kegiatan[{{ $idx }}][pelaksana]" value="{{ $row['pelaksana'] ?? '' }}" required
+                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
+                                                placeholder="Nama pelaksana kegiatan" />
                                         </div>
                                         <div>
                                             <label class="text-sm font-semibold text-gray-700 block mb-2">👥 Jumlah Peserta <span class="text-red-500">*</span></label>
                                             <input type="number" name="kegiatan[{{ $idx }}][jumlah_peserta]" value="{{ $row['jumlah_peserta'] ?? 0 }}" min="0" required
-                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition" />
+                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition" />
                                         </div>
                                         <div>
                                             <label class="text-sm font-semibold text-gray-700 block mb-2">💰 Anggaran (Rp) <span class="text-red-500">*</span></label>
                                             <input type="number" name="kegiatan[{{ $idx }}][anggaran]" value="{{ $row['anggaran'] ?? 0 }}" min="0" required
-                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
                                                 placeholder="Contoh: 2500000" />
                                         </div>
                                     </div>
@@ -150,7 +157,7 @@
                         <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t-2 border-gray-200">
                             <div class="flex gap-3">
                                 <button type="button" id="btn-tambah-baris"
-                                    class="px-5 py-2.5 border-2 border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition font-semibold text-sm flex items-center gap-2">
+                                    class="px-5 py-2.5 border-2 border-yellow-500 text-yellow-600 rounded-lg hover:bg-yellow-50 transition font-semibold text-sm flex items-center gap-2">
                                     <span>➕</span> Tambah Baris
                                 </button>
                                 <button type="button" id="btn-batal-form"
@@ -170,9 +177,9 @@
     </div>
 
     <template id="kegiatan-row-tpl">
-        <div class="kegiatan-row border-2 border-blue-200 rounded-lg p-5 bg-gradient-to-br from-blue-50 to-indigo-50 hover:shadow-md transition" data-index="__IDX__">
+        <div class="kegiatan-row border-2 border-yellow-200 rounded-lg p-5 bg-gradient-to-br from-yellow-50 to-amber-50 hover:shadow-md transition" data-index="__IDX__">
             <div class="flex justify-between items-center mb-4">
-                <span class="text-sm font-bold text-blue-700 bg-blue-100 px-3 py-1 rounded-full kegiatan-row-label">🏷️ Kegiatan #__N__</span>
+                <span class="text-sm font-bold text-yellow-700 bg-yellow-100 px-3 py-1 rounded-full kegiatan-row-label">🏷️ Kegiatan #__N__</span>
                 <button type="button" class="kegiatan-row-remove text-red-600 hover:text-red-800 text-sm font-semibold transition"
                     aria-label="Hapus baris">
                     <span>❌ Hapus</span>
@@ -182,7 +189,7 @@
                 <div class="md:col-span-2">
                     <label class="text-sm font-semibold text-gray-700 block mb-2">📌 Tema Utama <span class="text-red-500">*</span></label>
                     <select name="kegiatan[__IDX__][tema]" required
-                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition">
+                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition">
                         <option value="" disabled selected>-- Pilih tema --</option>
                         <option value="kaderisasi">🎓 Kaderisasi</option>
                         <option value="strukturisasi">🏢 Strukturisasi</option>
@@ -190,36 +197,41 @@
                     </select>
                 </div>
                 <div>
+                    <label class="text-sm font-semibold text-gray-700 block mb-2">🏛️ Bidang <span class="text-red-500">*</span></label>
+                    <input type="text" name="kegiatan[__IDX__][bidang]" required
+                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
+                        placeholder="Contoh: Bidang Organisasi" />
+                </div>
+                <div>
                     <label class="text-sm font-semibold text-gray-700 block mb-2">📅 Tanggal Pelaksanaan <span class="text-red-500">*</span></label>
                     <input type="date" name="kegiatan[__IDX__][tanggal_pelaksanaan]" required
-                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition" />
+                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition" />
                 </div>
                 <div>
                     <label class="text-sm font-semibold text-gray-700 block mb-2">🎯 Nama Kegiatan <span class="text-red-500">*</span></label>
                     <input type="text" name="kegiatan[__IDX__][nama_kegiatan]" required
-                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
                         placeholder="Contoh: Rapat Koordinasi Bulanan" />
                 </div>
                 <div>
-                    <label class="text-sm font-semibold text-gray-700 block mb-2">👤 Penanggung Jawab <span class="text-red-500">*</span></label>
-                    <input type="text" name="kegiatan[__IDX__][penanggung_jawab]" required
-                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
-                        placeholder="Nama penanggung jawab" />
+                    <label class="text-sm font-semibold text-gray-700 block mb-2">👤 Pelaksana <span class="text-red-500">*</span></label>
+                    <input type="text" name="kegiatan[__IDX__][pelaksana]" required
+                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
+                        placeholder="Nama pelaksana kegiatan" />
                 </div>
                 <div>
                     <label class="text-sm font-semibold text-gray-700 block mb-2">👥 Jumlah Peserta <span class="text-red-500">*</span></label>
                     <input type="number" name="kegiatan[__IDX__][jumlah_peserta]" value="0" min="0" required
-                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition" />
+                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition" />
                 </div>
                 <div>
                     <label class="text-sm font-semibold text-gray-700 block mb-2">💰 Anggaran (Rp) <span class="text-red-500">*</span></label>
                     <input type="number" name="kegiatan[__IDX__][anggaran]" value="0" min="0" required
-                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
                         placeholder="Contoh: 2500000" />
                 </div>
             </div>
         </div>
-    </template>                        class="w-full mt-1 rounded-md border-gray-300 focus:border-blue-400 focus:ring focus:ring-blue-100"
                         placeholder="Contoh: 2500000" />
                 </div>
             </div>

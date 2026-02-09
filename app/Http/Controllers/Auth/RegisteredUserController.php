@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kabupaten;
-use App\Models\Kota;
+use App\Models\Daerah;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -23,8 +22,7 @@ class RegisteredUserController extends Controller
     public function create(): View
     {
         return view('auth.register', [
-            'kotas' => Kota::query()->orderBy('nama')->get(['id', 'nama']),
-            'kabupatens' => Kabupaten::query()->orderBy('nama')->get(['id', 'nama']),
+            'daerahs' => Daerah::query()->orderBy('nama')->get(['id', 'nama', 'kode']),
         ]);
     }
 
@@ -39,35 +37,21 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'jenis_wilayah' => ['nullable', Rule::in(['kota', 'kabupaten'])],
-            'kota_id' => [
-                'nullable',
-                'integer',
-                'exists:kotas,id',
-                'required_if:jenis_wilayah,kota',
-                'prohibited_unless:jenis_wilayah,kota',
-            ],
-            'kabupaten_id' => [
-                'nullable',
-                'integer',
-                'exists:kabupatens,id',
-                'required_if:jenis_wilayah,kabupaten',
-                'prohibited_unless:jenis_wilayah,kabupaten',
-            ],
+            'daerah_id' => ['required', 'integer', 'exists:daerahs,id'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'kota_id' => $request->jenis_wilayah === 'kota' ? $request->kota_id : null,
-            'kabupaten_id' => $request->jenis_wilayah === 'kabupaten' ? $request->kabupaten_id : null,
+            'daerah_id' => $request->daerah_id,
+            'is_approved' => false,
+            'is_main_admin' => false,
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        return redirect(route('setup', absolute: false));
+        // Do not log user in until approved by main admin
+        return redirect()->route('login')->with('registered_pending', 'hubungi admin untuk persetujuan login');
     }
 }

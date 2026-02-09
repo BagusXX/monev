@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kegiatan;
+use App\Models\Daerah;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -16,16 +17,31 @@ class LaporanKegiatanController extends Controller
             $bulan = Carbon::now()->format('Y-m');
         }
 
-        $kegiatans = Kegiatan::query()
-            ->where('bulan', $bulan)
+        $daerahId = $request->query('daerah');
+
+        $baseQuery = Kegiatan::query()->where('bulan', $bulan);
+
+        if ($daerahId && is_numeric($daerahId)) {
+            $baseQuery->whereHas('user', function ($q) use ($daerahId) {
+                $q->where('daerah_id', (int) $daerahId);
+            });
+        }
+
+        $kegiatans = (clone $baseQuery)
             ->orderBy('nama_kegiatan')
             ->paginate(20)
             ->withQueryString();
 
-        $totalPeserta = (int) Kegiatan::query()->where('bulan', $bulan)->sum('jumlah_peserta');
-        $totalAnggaran = (int) Kegiatan::query()->where('bulan', $bulan)->sum('anggaran');
+        $totalPeserta = (int) (clone $baseQuery)->sum('jumlah_peserta');
+        $totalAnggaran = (int) (clone $baseQuery)->sum('anggaran');
 
-        return view('laporan.kegiatan', compact('bulan', 'kegiatans', 'totalPeserta', 'totalAnggaran'));
+        $daerahs = Daerah::orderBy('nama')->get();
+
+        if ($request->ajax()) {
+            return view('laporan.partials.kegiatan_list', compact('kegiatans'));
+        }
+
+        return view('laporan.kegiatan', compact('bulan', 'kegiatans', 'totalPeserta', 'totalAnggaran', 'daerahs', 'daerahId'));
     }
 }
 

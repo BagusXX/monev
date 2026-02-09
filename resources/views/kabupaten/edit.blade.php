@@ -24,7 +24,7 @@
                         <div>
                             <label class="text-sm font-bold text-gray-700 block mb-2">🌍 Nama Kabupaten <span class="text-red-500">*</span></label>
                             <input type="text" name="nama" value="{{ old('nama', $kabupaten->nama) }}" required autofocus
-                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
+                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-primary-600 focus:ring-2 focus:ring-primary-200 transition"
                                 placeholder="Masukkan nama kabupaten" />
                             @error('nama')
                                 <p class="text-red-600 text-sm mt-2 flex items-center gap-1"><span>⚠️</span> {{ $message }}</p>
@@ -37,7 +37,7 @@
                                 <span>❌</span> Batal
                             </a>
                             <button type="submit"
-                                class="inline-flex items-center gap-2 px-7 py-2.5 bg-gradient-to-r from-yellow-600 to-amber-600 text-white rounded-lg hover:shadow-lg transition font-bold text-sm">
+                                class="inline-flex items-center gap-2 px-7 py-2.5 bg-gradient-to-r from-primary-600 to-primary-600 text-white rounded-lg hover:shadow-lg transition font-bold text-sm">
                                 <span>💾</span> Simpan Perubahan
                             </button>
                         </div>

@@ -27,14 +27,14 @@
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
+                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-primary-600 shadow-sm focus:ring-primary-500 dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800" name="remember">
                 <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
             </label>
         </div>
 
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
+                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
@@ -44,4 +44,31 @@
             </x-primary-button>
         </div>
     </form>
+    @if(session('registered_pending'))
+        <div id="registeredPendingModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+            <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6">
+                <div class="flex items-start justify-between">
+                    <h3 class="text-lg font-bold">Pendaftaran Diterima</h3>
+                    <button id="closePendingModal" class="text-gray-500 hover:text-gray-700">✕</button>
+                </div>
+                <div class="mt-4 text-sm text-gray-700">
+                    <p>{{ session('registered_pending') }}</p>
+                </div>
+                <div class="mt-6 text-right">
+                    <a href="{{ route('home') }}" class="px-4 py-2 bg-primary-600 text-white rounded-lg">Tutup</a>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (function(){
+                const modal = document.getElementById('registeredPendingModal');
+                const close = document.getElementById('closePendingModal');
+                if (!modal) return;
+                close.addEventListener('click', function(){ modal.style.display = 'none'; });
+                // auto-hide after 8 seconds
+                setTimeout(()=>{ if (modal) modal.style.display = 'none'; }, 8000);
+            })();
+        </script>
+    @endif
 </x-guest-layout>

@@ -39,25 +39,7 @@ class UserUpdateRequest extends FormRequest
                 Rule::unique(User::class)->ignore($userId),
             ],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
-            'kota_id' => ['nullable', 'integer', 'exists:kotas,id'],
-            'kabupaten_id' => ['nullable', 'integer', 'exists:kabupatens,id'],
-            'jenis_wilayah' => ['nullable', 'in:kota,kabupaten'],
+            'daerah_id' => ['required', 'integer', 'exists:daerahs,id'],
         ];
-    }
-
-    public function withValidator(Validator $validator): void
-    {
-        $validator->after(function (Validator $validator) {
-            $kota = $this->input('kota_id');
-            $kab = $this->input('kabupaten_id');
-
-            if (empty($kota) && empty($kab)) {
-                $validator->errors()->add('kota_id', 'Pilih salah satu: Kota atau Kabupaten.');
-            }
-
-            if (!empty($kota) && !empty($kab)) {
-                $validator->errors()->add('kabupaten_id', 'Pilih salah satu saja (Kota atau Kabupaten), jangan keduanya.');
-            }
-        });
     }
 }

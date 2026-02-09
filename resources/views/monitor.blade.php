@@ -7,7 +7,7 @@
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Formulir pemantauan dan pencatatan rapat</p>
             </div>
-            <span class="px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">📋 Formulir Rapat</span>
+            <span class="px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-xs font-semibold">📋 Formulir Rapat</span>
         </div>
     </x-slot>
 
@@ -59,26 +59,26 @@
                         <div>
                             <label class="text-sm font-semibold text-gray-700 block mb-2">📅 Bulan <span class="text-red-500">*</span></label>
                             <input type="month" id="bulan" name="bulan" value="{{ old('bulan', $bulan ?? '') }}"
-                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
                                 onchange="setBulan()">
                         </div>
                         <div>
                             <label class="text-sm font-semibold text-gray-700 block mb-2">📆 Tanggal <span class="text-red-500">*</span></label>
                             <input type="date" id="tanggal" name="tanggal" value="{{ old('tanggal', $tanggal ?? '') }}"
-                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
                                 onchange="updateDisplay()">
                         </div>
                         <div>
                             <label class="text-sm font-semibold text-gray-700 block mb-2">🕐 Waktu <span class="text-red-500">*</span></label>
                             <input type="time" id="waktu" name="waktu" value="{{ old('waktu') }}"
-                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
                                 onchange="updateDisplay()">
                         </div>
                     </div>
                     <div id="hasilTanggal"
-                        class="mt-4 hidden p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-lg text-blue-900 font-semibold flex items-center gap-2">
+                        class="mt-4 hidden p-4 bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-yellow-300 rounded-lg text-yellow-900 font-semibold flex items-center gap-2">
                         <span class="text-xl">✅</span>
-                        <span>Tanggal & Waktu Rapat: <span id="output" class="text-blue-700"></span></span>
+                        <span>Tanggal & Waktu Rapat: <span id="output" class="text-yellow-700"></span></span>
                     </div>
                 </div>
 
@@ -90,9 +90,9 @@
                         Pilih "Iya" dan isi uraian singkat untuk setiap jenis rapat yang dilaksanakan.
                     </p>
 
-                    <div class="border-2 border-blue-200 rounded-lg p-5 bg-gradient-to-br from-blue-50 to-indigo-50 hover:shadow-sm transition">
+                    <div class="border-2 border-yellow-200 rounded-lg p-5 bg-gradient-to-br from-yellow-50 to-yellow-50 hover:shadow-sm transition">
                         <label class="font-bold text-gray-800 flex items-center gap-2">
-                            <span class="bg-blue-600 text-white w-6 h-6 rounded-full text-center leading-6 text-sm">1</span>
+                            <span class="bg-yellow-600 text-white w-6 h-6 rounded-full text-center leading-6 text-sm">1</span>
                             🏢 Apakah ada rapat DPTD?
                         </label>
                         <div class="mt-3 flex gap-6">
@@ -110,15 +110,15 @@
                         <div id="dptd" class="mt-4 hidden">
                             <label class="text-sm font-semibold text-gray-700 block mb-2">💬 Jelaskan detail rapat DPTD:</label>
                             <textarea name="uraian_dptd"
-                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
                                 rows="3"
                                 placeholder="Uraian rapat DPTD...">{{ old('uraian_dptd') }}</textarea>
                         </div>
                     </div>
 
-                    <div class="border-2 border-purple-200 rounded-lg p-5 bg-gradient-to-br from-purple-50 to-pink-50 hover:shadow-sm transition mt-4">
+                    <div class="border-2 border-yellow-200 rounded-lg p-5 bg-gradient-to-br from-yellow-50 to-pink-50 hover:shadow-sm transition mt-4">
                         <label class="font-bold text-gray-800 flex items-center gap-2">
-                            <span class="bg-purple-600 text-white w-6 h-6 rounded-full text-center leading-6 text-sm">2</span>
+                            <span class="bg-yellow-600 text-white w-6 h-6 rounded-full text-center leading-6 text-sm">2</span>
                             👥 Apakah ada rapat PH DPD (KSB & KABID)?
                         </label>
                         <div class="mt-3 flex gap-6">
@@ -136,7 +136,7 @@
                         <div id="phdpd" class="mt-4 hidden">
                             <label class="text-sm font-semibold text-gray-700 block mb-2">💬 Jelaskan detail rapat PH DPD:</label>
                             <textarea name="uraian_phdpd"
-                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition"
+                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
                                 rows="3"
                                 placeholder="Uraian rapat PH DPD...">{{ old('uraian_phdpd') }}</textarea>
                         </div>
@@ -194,9 +194,70 @@
                         </div>
                     </div>
 
+                    {{-- RAPAT 5 --}}
+<div class="border-2 border-amber-200 rounded-lg p-5 bg-gradient-to-br from-amber-50 to-amber-50 hover:shadow-sm transition mt-4">
+    <label class="font-bold text-gray-800 flex items-center gap-2">
+        <span class="bg-teal-600 text-white w-6 h-6 rounded-full text-center leading-6 text-sm">5</span>
+        🏛️ Apakah ada rapat bersama KPD?
+    </label>
+    <div class="mt-3 flex gap-6">
+        <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="rapat_kpd" value="iya"
+                {{ old('rapat_kpd') === 'iya' ? 'checked' : '' }}
+                onclick="toggleField('kpd', true)">
+            <span>✅ Iya</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="rapat_kpd" value="tidak"
+                {{ old('rapat_kpd') === 'tidak' ? 'checked' : '' }}
+                onclick="toggleField('kpd', false)">
+            <span>❌ Tidak</span>
+        </label>
+    </div>
+    <div id="kpd" class="mt-4 hidden">
+        <label class="text-sm font-semibold text-gray-700 block mb-2">
+            💬 Jelaskan detail rapat bersama KPD:
+        </label>
+        <textarea name="uraian_kpd" rows="3"
+            class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300"
+            placeholder="Uraian rapat bersama KPD...">{{ old('uraian_kpd') }}</textarea>
+    </div>
+</div>
+
+
+{{-- RAPAT 6 --}}
+<div class="border-2 border-rose-200 rounded-lg p-4 bg-rose-50">
+    <label class="flex items-center gap-3 font-semibold text-gray-800 cursor-pointer">
+        <span class="bg-rose-600 text-white w-6 h-6 rounded-full text-center leading-6 text-sm">6</span>
+        👥 Apakah ada rapat bersama anggota Dewan?
+    </label>
+    <div class="mt-3 flex gap-6">
+        <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="rapat_dewan" value="iya"
+                {{ old('rapat_dewan') === 'iya' ? 'checked' : '' }}
+                onclick="toggleField('dewan', true)">
+            <span>✅ Iya</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="rapat_dewan" value="tidak"
+                {{ old('rapat_dewan') === 'tidak' ? 'checked' : '' }}
+                onclick="toggleField('dewan', false)">
+            <span>❌ Tidak</span>
+        </label>
+    </div>
+    <div id="dewan" class="mt-4 hidden">
+        <label class="text-sm font-semibold text-gray-700 block mb-2">
+            💬 Jelaskan detail rapat bersama anggota Dewan:
+        </label>
+        <textarea name="uraian_dewan" rows="3"
+            class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300"
+            placeholder="Uraian rapat bersama anggota Dewan...">{{ old('uraian_dewan') }}</textarea>
+    </div>
+</div>
+
                     <div class="flex justify-end pt-6 border-t-2 border-gray-200 mt-6">
                         <button type="submit"
-                            class="px-7 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:shadow-lg transition font-bold text-sm flex items-center gap-2">
+                            class="px-7 py-2.5 bg-gradient-to-r from-yellow-600 to-yellow-600 text-white rounded-lg hover:shadow-lg transition font-bold text-sm flex items-center gap-2">
                             <span>✅</span> Simpan Data Monitoring
                         </button>
                     </div>
@@ -283,6 +344,9 @@
             if (document.querySelector('input[name="rapat_phdpd"][value="iya"]:checked')) toggleField('phdpd', true);
             if (document.querySelector('input[name="rapat_pimpinan"][value="iya"]:checked')) toggleField('pimpinan', true);
             if (document.querySelector('input[name="rapat_bidang"][value="iya"]:checked')) toggleField('bidang', true);
+            if (document.querySelector('input[name="rapat_kpd"][value="iya"]:checked')) toggleField('kpd', true);
+            if (document.querySelector('input[name="rapat_dewan"][value="iya"]:checked')) toggleField('dewan', true);
+
         });
     </script>
 </x-app-layout>

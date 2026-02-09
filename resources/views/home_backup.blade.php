@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="font-bold text-3xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent leading-tight">
+                <h2 class="font-bold text-3xl bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent leading-tight">
                     📊 {{ __('Dashboard Sistem') }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-2">Selamat datang di sistem manajemen wilayah Kota Semarang</p>
@@ -10,18 +10,18 @@
         </div>
     </x-slot>
 
-    <div class="py-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen">
+    <div class="py-8 bg-gradient-to-br from-primary-50 via-primary-50 to-pink-50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-6">
                 <!-- Card 1 - Blue -->
-                <div class="bg-gradient-to-br from-blue-500 to-blue-600 overflow-hidden shadow-lg sm:rounded-xl border-2 border-blue-400 hover:shadow-2xl hover:scale-105 transition-all duration-200 text-white">
+                <div class="bg-gradient-to-br from-primary-500 to-primary-600 overflow-hidden shadow-lg sm:rounded-xl border-2 border-primary-400 hover:shadow-2xl hover:scale-105 transition-all duration-200 text-white">
                     <div class="p-6">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-blue-100">👥 Total Users</p>
+                                <p class="text-sm font-medium text-primary-100">👥 Total Users</p>
                                 <p class="text-3xl font-bold text-white mt-2">1,234</p>
-                                <p class="text-xs text-blue-100 mt-2">
+                                <p class="text-xs text-primary-100 mt-2">
                                     <span class="inline-flex items-center">
                                         <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
@@ -67,13 +67,13 @@
                 </div>
 
                 <!-- Card 3 - Purple -->
-                <div class="bg-gradient-to-br from-purple-500 to-violet-600 overflow-hidden shadow-lg sm:rounded-xl border-2 border-purple-400 hover:shadow-2xl hover:scale-105 transition-all duration-200 text-white">
+                <div class="bg-gradient-to-br from-primary-500 to-violet-600 overflow-hidden shadow-lg sm:rounded-xl border-2 border-primary-400 hover:shadow-2xl hover:scale-105 transition-all duration-200 text-white">
                     <div class="p-6">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-purple-100">📍 Total Kelurahan</p>
+                                <p class="text-sm font-medium text-primary-100">📍 Total Kelurahan</p>
                                 <p class="text-3xl font-bold text-white mt-2">128</p>
-                                <p class="text-xs text-purple-100 mt-2">
+                                <p class="text-xs text-primary-100 mt-2">>
                                     <span class="inline-flex items-center">
                                         <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
@@ -124,13 +124,13 @@
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
                 <!-- Line Chart -->
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-xl border-2 border-gray-200 hover:shadow-2xl transition">
-                    <div class="p-6 border-b-2 border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50">
+                    <div class="p-6 border-b-2 border-gray-200 bg-gradient-to-r from-primary-50 to-primary-50">
                         <div class="flex items-center justify-between">
                             <div>
                                 <h3 class="text-lg font-bold text-gray-900">📈 Statistik Bulanan</h3>
                                 <p class="text-sm text-gray-600 mt-1">Tren data sepanjang tahun</p>
                             </div>
-                            <select class="text-sm border-2 border-blue-300 bg-white text-gray-700 rounded-lg shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 px-3 py-1.5 font-semibold">
+                            <select class="text-sm border-2 border-primary-300 bg-white text-gray-700 rounded-lg shadow-sm focus:border-primary-600 focus:ring-2 focus:ring-primary-200 px-3 py-1.5 font-semibold">
                                 <option>Bulan ini</option>
                                 <option>3 Bulan terakhir</option>
                                 <option>Tahun ini</option>
@@ -146,7 +146,7 @@
 
                 <!-- Pie Chart -->
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-xl border-2 border-gray-200 hover:shadow-2xl transition">
-                    <div class="p-6 border-b-2 border-gray-200 bg-gradient-to-r from-purple-50 to-pink-50">
+                    <div class="p-6 border-b-2 border-gray-200 bg-gradient-to-r from-primary-50 to-pink-50">
                         <div class="flex items-center justify-between">
                             <div>
                                 <h3 class="text-lg font-bold text-gray-900">🎯 Distribusi Data</h3>
@@ -164,16 +164,16 @@
 
             <!-- Map Section -->
             <div class="mb-6">
-                <div class="bg-white overflow-hidden shadow-2xl sm:rounded-2xl border-2 border-gradient-to-r from-purple-300 to-pink-300 hover:shadow-2xl transition">
+                <div class="bg-white overflow-hidden shadow-2xl sm:rounded-2xl border-2 border-gradient-to-r from-primary-300 to-pink-300 hover:shadow-2xl transition">
                     <!-- Enhanced Header with Gradient -->
-                    <div class="p-7 bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 border-b-4 border-gradient-to-r from-purple-500 to-pink-500">
+                    <div class="p-7 bg-gradient-to-r from-slate-900 via-yellow-900 to-slate-900 border-b-4 border-gradient-to-r from-primary-500 to-pink-500">
                         <div class="flex items-center justify-between mb-5">
                             <div>
-                                <h3 class="text-2xl font-bold text-transparent bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text">🗺️ Peta Provinsi Jawa Tengah</h3>
-                                <p class="text-sm text-purple-200 mt-2 font-semibold">Visualisasi wilayah administrasi seluruh Provinsi Jawa Tengah dengan data real-time</p>
+                                <h3 class="text-2xl font-bold text-transparent bg-gradient-to-r from-primary-300 to-pink-300 bg-clip-text">🗺️ Peta Provinsi Jawa Tengah</h3>
+                                <p class="text-sm text-primary-200 mt-2 font-semibold">Visualisasi wilayah administrasi seluruh Provinsi Jawa Tengah dengan data real-time</p>
                             </div>
                             <div class="hidden md:flex items-center gap-3 flex-wrap justify-end">
-                                <div class="px-4 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full shadow-lg hover:shadow-xl transition transform hover:scale-105">
+                                <div class="px-4 py-2.5 bg-gradient-to-r from-primary-500 to-primary-500 rounded-full shadow-lg hover:shadow-xl transition transform hover:scale-105">
                                     <span class="inline-flex items-center text-xs font-bold text-white">
                                         <span class="w-2.5 h-2.5 bg-white rounded-full mr-2 animate-pulse"></span>
                                         35 Kota/Kabupaten
@@ -188,42 +188,42 @@
                             </div>
                         </div>
                         <!-- Mini Legend in Header -->
-                        <div class="flex items-center gap-6 pt-4 border-t border-purple-400 flex-wrap">
+                        <div class="flex items-center gap-6 pt-4 border-t border-primary-400 flex-wrap">
                             <div class="flex items-center gap-2">
                                 <span class="w-3 h-3 rounded-full bg-red-500 shadow-md"></span>
-                                <span class="text-xs text-purple-100 font-semibold">Jateng Utara</span>
+                                <span class="text-xs text-primary-100 font-semibold">Jateng Utara</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-amber-500 shadow-md"></span>
-                                <span class="text-xs text-purple-100 font-semibold">Jateng Barat</span>
+                                <span class="w-3 h-3 rounded-full bg-primary-500 shadow-md"></span>
+                                <span class="text-xs text-primary-100 font-semibold">Jateng Barat</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-md"></span>
-                                <span class="text-xs text-purple-100 font-semibold">Jateng Tengah</span>
+                                <span class="text-xs text-primary-100 font-semibold">Jateng Tengah</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-blue-500 shadow-md"></span>
-                                <span class="text-xs text-purple-100 font-semibold">Jateng Timur</span>
+                                <span class="w-3 h-3 rounded-full bg-primary-500 shadow-md"></span>
+                                <span class="text-xs text-primary-100 font-semibold">Jateng Timur</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-purple-500 shadow-md"></span>
-                                <span class="text-xs text-purple-100 font-semibold">Jateng Selatan</span>
+                                <span class="w-3 h-3 rounded-full bg-primary-500 shadow-md"></span>
+                                <span class="text-xs text-primary-100 font-semibold">Jateng Selatan</span>
                             </div>
                         </div>
                     </div>
-                    <div class="p-7 bg-gradient-to-br from-gray-50 to-blue-50">
+                    <div class="p-7 bg-gradient-to-br from-gray-50 to-primary-50">
                         <!-- Map Container with Enhanced Styling -->
-                        <div class="rounded-xl overflow-hidden border-4 border-gradient-to-r from-purple-400 to-pink-400 shadow-2xl hover:shadow-2xl transition">
+                        <div class="rounded-xl overflow-hidden border-4 border-gradient-to-r from-primary-400 to-pink-400 shadow-2xl hover:shadow-2xl transition">
                             <div id="map" class="w-full bg-white" style="height: 500px; min-height: 500px; display: block;"></div>
                         </div>
                         <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
                             <!-- Kota Semarang Card -->
                             <div class="group cursor-pointer">
-                                <div class="text-center p-5 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl border-2 border-blue-300 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-200 text-white">
+                                <div class="text-center p-5 bg-gradient-to-br from-primary-400 to-primary-500 rounded-xl border-2 border-primary-300 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-200 text-white">
                                     <div class="text-2xl mb-2">🌟</div>
-                                    <p class="text-xs font-bold text-blue-100 uppercase tracking-wider">Semarang</p>
+                                    <p class="text-xs font-bold text-primary-100 uppercase tracking-wider">Semarang</p>
                                     <p class="text-3xl font-bold text-white mt-2">1</p>
-                                    <p class="text-xs text-blue-100 mt-2 font-semibold">Kota Metropolitan</p>
+                                    <p class="text-xs text-primary-100 mt-2 font-semibold">Kota Metropolitan</p>
                                 </div>
                             </div>
                             <!-- Kota Surakarta Card -->
@@ -237,7 +237,7 @@
                             </div>
                             <!-- Kota Pekalongan Card -->
                             <div class="group cursor-pointer">
-                                <div class="text-center p-5 bg-gradient-to-br from-violet-400 to-purple-500 rounded-xl border-2 border-violet-300 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-200 text-white">
+                                <div class="text-center p-5 bg-gradient-to-br from-primary-400 to-primary-500 rounded-xl border-2 border-amber-300 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-200 text-white">
                                     <div class="text-2xl mb-2">🏖️</div>
                                     <p class="text-xs font-bold text-violet-100 uppercase tracking-wider">Pekalongan</p>
                                     <p class="text-3xl font-bold text-white mt-2">1</p>
@@ -246,11 +246,11 @@
                             </div>
                             <!-- Kabupaten Card -->
                             <div class="group cursor-pointer">
-                                <div class="text-center p-5 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl border-2 border-amber-300 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-200 text-white">
+                                <div class="text-center p-5 bg-gradient-to-br from-primary-400 to-orange-500 rounded-xl border-2 border-amber-300 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-200 text-white">
                                     <div class="text-2xl mb-2">🌾</div>
-                                    <p class="text-xs font-bold text-amber-100 uppercase tracking-wider">Kabupaten</p>
+                                    <p class="text-xs font-bold text-primary-100 uppercase tracking-wider">Kabupaten</p>
                                     <p class="text-3xl font-bold text-white mt-2">30+</p>
-                                    <p class="text-xs text-amber-100 mt-2 font-semibold">Wilayah Perifer</p>
+                                    <p class="text-xs text-primary-100 mt-2 font-semibold">Wilayah Perifer</p>
                                 </div>
                             </div>
                         </div>
@@ -260,7 +260,7 @@
 
             <!-- Recent Activity Table -->
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-xl border-2 border-gray-200">
-                <div class="p-6 border-b-2 border-gray-200 bg-gradient-to-r from-indigo-50 to-blue-50">
+                <div class="p-6 border-b-2 border-gray-200 bg-gradient-to-r from-primary-50 to-primary-50">
                     <h3 class="text-lg font-bold text-gray-900">⚡ Aktivitas Terbaru</h3>
                     <p class="text-sm text-gray-600 mt-1">Daftar aktivitas sistem terkini</p>
                 </div>

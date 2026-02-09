@@ -22,8 +22,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'kota_id',
-        'kabupaten_id',
+        'daerah_id',
+        'is_approved',
+        'is_main_admin',
+        'is_rejected',
     ];
 
     /**
@@ -46,34 +48,30 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_approved' => 'boolean',
+            'is_main_admin' => 'boolean',
+            'is_rejected' => 'boolean',
         ];
     }
 
-    public function kota(): BelongsTo
+    public function daerah(): BelongsTo
     {
-        return $this->belongsTo(Kota::class);
+        return $this->belongsTo(Daerah::class);
     }
 
-    public function kabupaten(): BelongsTo
+    public function getDaerahLabelAttribute(): string
     {
-        return $this->belongsTo(Kabupaten::class);
-    }
-
-    public function getWilayahLabelAttribute(): string
-    {
-        if ($this->relationLoaded('kota') && $this->kota) {
-            return 'Kota '.$this->kota->nama;
-        }
-        if ($this->relationLoaded('kabupaten') && $this->kabupaten) {
-            return 'Kabupaten '.$this->kabupaten->nama;
+        if ($this->relationLoaded('daerah') && $this->daerah) {
+            return $this->daerah->nama . ' - ' . $this->daerah->kode;
         }
 
         // fallback tanpa eager load
-        if ($this->kota_id && $this->kota) {
-            return 'Kota '.$this->kota->nama;
+        if ($this->daerah_id && $this->daerah) {
+            return $this->daerah->nama . ' - ' . $this->daerah->kode;
         }
-        if ($this->kabupaten_id && $this->kabupaten) {
-            return 'Kabupaten '.$this->kabupaten->nama;
+
+        if ($this->is_main_admin) {
+            return 'Admin Utama';
         }
 
         return '-';

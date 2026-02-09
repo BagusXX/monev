@@ -95,6 +95,11 @@
                     margin-left: 5rem;
                 }
             }
+            
+            /* Fix for collapsed sidebar content visibility */
+            .sidebar-collapsed .hidden-lg-inline {
+                display: none !important;
+            }
         </style>
     </head>
     <body class="font-sans antialiased bg-gray-50">

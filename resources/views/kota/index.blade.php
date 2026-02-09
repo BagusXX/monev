@@ -7,7 +7,7 @@
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Kelola data kota di sistem</p>
             </div>
-            <a href="{{ route('kota.create') }}" class="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg hover:shadow-lg transition font-bold text-sm">
+            <a href="{{ route('kota.create') }}" class="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-yellow-600 to-amber-600 text-white rounded-lg hover:shadow-lg transition font-bold text-sm">
                 <span>➕</span> Tambah Kota
             </a>
         </div>
@@ -28,12 +28,12 @@
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl border-2 border-gray-200 hover:shadow-xl transition">
                 <div class="p-6 sm:p-8">
                     <h3 class="text-xl font-bold text-gray-900 mb-2">📋 Daftar Kota</h3>
-                    <p class="text-gray-600 text-sm mb-6">Total: <span class="font-bold text-blue-600">{{ $kotas->total() }}</span> kota</p>
+                    <p class="text-gray-600 text-sm mb-6">Total: <span class="font-bold text-yellow-600">{{ $kotas->total() }}</span> kota</p>
 
                     <div class="overflow-x-auto">
                         <table class="w-full">
                             <thead>
-                                <tr class="bg-gradient-to-r from-blue-50 to-cyan-50 border-b-2 border-gray-200">
+                                <tr class="bg-gradient-to-r from-yellow-50 to-amber-50 border-b-2 border-gray-200">
                                     <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">No</th>
                                     <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Nama Kota</th>
                                     <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Tanggal Dibuat</th>
@@ -42,7 +42,7 @@
                             </thead>
                             <tbody class="divide-y divide-gray-200">
                                 @forelse($kotas as $index => $kota)
-                                    <tr class="hover:bg-blue-50 transition-colors">
+                                    <tr class="hover:bg-yellow-50 transition-colors">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">{{ $kotas->firstItem() + $index }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                             <div class="flex items-center gap-2">
@@ -72,7 +72,7 @@
                                             <div class="flex flex-col items-center justify-center gap-2">
                                                 <span class="text-4xl">📭</span>
                                                 <p class="font-medium">Tidak ada data kota.</p>
-                                                <a href="{{ route('kota.create') }}" class="text-blue-600 hover:text-blue-800 underline text-sm mt-2">Buat kota baru</a>
+                                                <a href="{{ route('kota.create') }}" class="text-yellow-600 hover:text-yellow-800 underline text-sm mt-2">Buat kota baru</a>
                                             </div>
                                         </td>
                                     </tr>

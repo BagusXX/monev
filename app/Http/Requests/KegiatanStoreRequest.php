@@ -38,9 +38,10 @@ class KegiatanStoreRequest extends FormRequest
             }
             $out[] = [
                 'tema' => isset($row['tema']) ? trim((string) $row['tema']) : '',
+                'bidang' => isset($row['bidang']) ? trim((string) $row['bidang']) : '',
                 'tanggal_pelaksanaan' => isset($row['tanggal_pelaksanaan']) ? trim((string) $row['tanggal_pelaksanaan']) : '',
                 'nama_kegiatan' => $nk,
-                'penanggung_jawab' => isset($row['penanggung_jawab']) ? trim((string) $row['penanggung_jawab']) : '',
+                'pelaksana' => isset($row['pelaksana']) ? trim((string) $row['pelaksana']) : '',
                 'jumlah_peserta' => $toDigits($row['jumlah_peserta'] ?? null),
                 'anggaran' => $toDigits($row['anggaran'] ?? null),
             ];
@@ -57,9 +58,10 @@ class KegiatanStoreRequest extends FormRequest
         return [
             'kegiatan' => ['required', 'array', 'min:1'],
             'kegiatan.*.tema' => ['required', 'string', 'in:kaderisasi,strukturisasi,citra partai'],
+            'kegiatan.*.bidang' => ['required', 'string', 'max:255'],
             'kegiatan.*.tanggal_pelaksanaan' => ['required', 'date'],
             'kegiatan.*.nama_kegiatan' => ['required', 'string', 'max:255'],
-            'kegiatan.*.penanggung_jawab' => ['required', 'string', 'max:255'],
+            'kegiatan.*.pelaksana' => ['required', 'string', 'max:255'],
             'kegiatan.*.jumlah_peserta' => ['required', 'integer', 'min:0'],
             'kegiatan.*.anggaran' => ['required', 'integer', 'min:0'],
         ];

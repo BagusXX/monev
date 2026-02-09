@@ -16,6 +16,10 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // Approval pending page (no approval check needed for this route)
+    Route::get('/approval/pending', [App\Http\Controllers\ApprovalController::class, 'pending'])->name('approval.pending');
+    Route::get('/approval/rejected', [App\Http\Controllers\ApprovalController::class, 'rejected'])->name('approval.rejected');
+
     // Home/Dashboard
     Route::get('/home', function () {
         return view('home');
@@ -23,7 +27,7 @@ Route::middleware('auth')->group(function () {
 
     // Setup
     Route::get('/setup', function () {
-        $users = User::with(['kota', 'kabupaten'])
+        $users = User::with(['daerah'])
             ->latest()
             ->paginate(10);
         return view('setup', compact('users'));
@@ -60,24 +64,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::patch('/users/{user}/approve', [UserController::class, 'approve'])->name('users.approve');
+    Route::patch('/users/{user}/reject', [UserController::class, 'reject'])->name('users.reject');
 
-    // Wilayah (Kota & Kabupaten) Routes - Consolidated
-    Route::get('/wilayah', [App\Http\Controllers\WilayahController::class, 'index'])->name('wilayah.index');
-    Route::get('/wilayah/create', [App\Http\Controllers\WilayahController::class, 'create'])->name('wilayah.create');
-    Route::post('/wilayah/kota', [App\Http\Controllers\WilayahController::class, 'storeKota'])->name('wilayah.store.kota');
-    Route::post('/wilayah/kabupaten', [App\Http\Controllers\WilayahController::class, 'storeKabupaten'])->name('wilayah.store.kabupaten');
-    Route::get('/wilayah/kota/{kota}/edit', [App\Http\Controllers\WilayahController::class, 'editKota'])->name('wilayah.edit.kota');
-    Route::get('/wilayah/kabupaten/{kabupaten}/edit', [App\Http\Controllers\WilayahController::class, 'editKabupaten'])->name('wilayah.edit.kabupaten');
-    Route::patch('/wilayah/kota/{kota}', [App\Http\Controllers\WilayahController::class, 'updateKota'])->name('wilayah.update.kota');
-    Route::patch('/wilayah/kabupaten/{kabupaten}', [App\Http\Controllers\WilayahController::class, 'updateKabupaten'])->name('wilayah.update.kabupaten');
-    Route::delete('/wilayah/kota/{kota}', [App\Http\Controllers\WilayahController::class, 'destroyKota'])->name('wilayah.destroy.kota');
-    Route::delete('/wilayah/kabupaten/{kabupaten}', [App\Http\Controllers\WilayahController::class, 'destroyKabupaten'])->name('wilayah.destroy.kabupaten');
+    // Daerah (Province/Region) Routes
+    Route::resource('daerah', App\Http\Controllers\DaerahController::class);
 
     // Per Wilayah Routes
     Route::resource('kecamatan', App\Http\Controllers\KecamatanController::class);
     Route::resource('kelurahan', App\Http\Controllers\KelurahanController::class);
     
-    // Keep old kota/kabupaten routes for backward compatibility (optional, can be removed if not used elsewhere)
+    // Kota & Kabupaten Routes
     Route::resource('kota', KotaController::class)->parameters(['kota' => 'kota'])->except(['show']);
     Route::resource('kabupaten', KabupatenController::class)->except(['show']);
 });

@@ -41,6 +41,22 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
+        // prevent login for users who are not yet approved
+        $userModel = config('auth.providers.users.model');
+        $user = $userModel::where('email', $this->input('email'))->first();
+        if ($user && !$user->is_approved && !$user->is_main_admin) {
+            throw ValidationException::withMessages([
+                'email' => 'Akun Anda belum disetujui oleh Admin Utama.',
+            ]);
+        }
+
+        // prevent login for users who are rejected
+        if ($user && $user->is_rejected) {
+            throw ValidationException::withMessages([
+                'email' => 'Akun Anda telah ditolak oleh Admin Utama.',
+            ]);
+        }
+
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 

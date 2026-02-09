@@ -7,7 +7,7 @@
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Kelola user dan pengaturan sistem</p>
             </div>
-            <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">👥 User Management</span>
+            <span class="px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-xs font-semibold">👥 User Management</span>
         </div>
     </x-slot>
 
@@ -22,7 +22,7 @@
                             </h3>
                             <p class="text-sm text-gray-500 mt-1">Kelola dan administrasi pengguna sistem</p>
                         </div>
-                        <a href="{{ route('users.create') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-blue-600 border border-transparent rounded-lg font-bold text-sm text-white uppercase tracking-wider hover:shadow-lg hover:from-indigo-700 hover:to-blue-700 active:from-indigo-800 active:to-blue-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition">
+                        <a href="{{ route('users.create') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-yellow-600 to-amber-600 border border-transparent rounded-lg font-bold text-sm text-white uppercase tracking-wider hover:shadow-lg hover:from-yellow-700 hover:to-amber-700 active:from-yellow-800 active:to-amber-800 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition">
                             <span>➕</span> {{ __('Tambah User') }}
                         </a>
                     </div>
@@ -36,33 +36,78 @@
 
                     <div class="overflow-x-auto rounded-xl border-2 border-gray-200 shadow-md">
                         <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gradient-to-r from-blue-50 to-indigo-50">
+                            <thead class="bg-gradient-to-r from-yellow-50 to-amber-50">
                                 <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">👤 Nama</th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">📧 Email</th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">🗺️ Wilayah</th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">📅 Tanggal Dibuat</th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">⚡ Aksi</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-yellow-900 uppercase tracking-wider">👤 Nama</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-yellow-900 uppercase tracking-wider">📧 Email</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-yellow-900 uppercase tracking-wider">🗺️ Wilayah</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-yellow-900 uppercase tracking-wider">✅ Status</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-yellow-900 uppercase tracking-wider">⚡ Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($users ?? [] as $user)
-                                    <tr class="hover:bg-blue-50 transition">
+                                    <tr class="hover:bg-yellow-50 transition {{ $user->is_rejected ? 'bg-red-50 border-l-4 border-red-400' : (!$user->is_approved && !$user->is_main_admin ? 'bg-blue-50 border-l-4 border-blue-400' : '') }}">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">{{ $user->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><code class="bg-gray-100 px-2 py-1 rounded text-xs">{{ $user->email }}</code></td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm"><span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full font-medium text-xs">{{ $user->wilayah_label }}</span></td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $user->created_at->format('d/m/Y') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3 flex items-center">
-                                            <a href="{{ route('users.edit', $user) }}" class="inline-flex items-center gap-1 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition font-semibold">
-                                                <span>✏️</span> Edit
-                                            </a>
-                                            <form action="{{ route('users.destroy', $user) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="inline-flex items-center gap-1 px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 hover:text-red-700 transition font-semibold">
-                                                    <span>🗑️</span> Hapus
-                                                </button>
-                                            </form>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm"><span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full font-medium text-xs">{{ $user->daerah_label }}</span></td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                            @if($user->is_main_admin)
+                                                <span class="inline-block px-3 py-1 bg-gray-100 text-gray-800 rounded-full font-semibold text-xs">👑 Admin Utama</span>
+                                            @elseif($user->is_rejected)
+                                                <span class="inline-block px-3 py-1 bg-red-100 text-red-700 rounded-full font-semibold text-xs">❌ Ditolak</span>
+                                            @elseif(!$user->is_approved)
+                                                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full font-semibold text-xs">⏳ Menunggu</span>
+                                            @else
+                                                <span class="inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full font-semibold text-xs">✅ Disetujui</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            @if(!$user->is_main_admin)
+                                                @if($user->is_rejected)
+                                                    <form action="{{ route('users.destroy', $user) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="inline-flex items-center gap-1 px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 hover:text-red-700 transition font-semibold text-xs">
+                                                            <span>🗑️</span> Hapus
+                                                        </button>
+                                                    </form>
+                                                @elseif(!$user->is_approved)
+                                                    @if(auth()->user()->is_main_admin)
+                                                        <div class="flex items-center gap-2">
+                                                            <form action="{{ route('users.approve', $user) }}" method="POST" class="inline">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <button type="submit" class="inline-flex items-center gap-1 px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-semibold text-xs">
+                                                                    <span>✅</span> Setujui
+                                                                </button>
+                                                            </form>
+                                                            <form action="{{ route('users.reject', $user) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menolak user ini?');">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <button type="submit" class="inline-flex items-center gap-1 px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition font-semibold text-xs">
+                                                                    <span>❌</span> Tolak
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    @else
+                                                        <span class="text-gray-400 text-xs">Menunggu persetujuan admin</span>
+                                                    @endif
+                                                @else
+                                                    <div class="flex items-center gap-2">
+                                                        <a href="{{ route('users.edit', $user) }}" class="inline-flex items-center gap-1 px-3 py-2 bg-yellow-50 text-yellow-600 rounded-lg hover:bg-yellow-100 hover:text-yellow-700 transition font-semibold text-xs">
+                                                            <span>✏️</span> Edit
+                                                        </a>
+                                                        <form action="{{ route('users.destroy', $user) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="inline-flex items-center gap-1 px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 hover:text-red-700 transition font-semibold text-xs">
+                                                                <span>🗑️</span> Hapus
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                @endif
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty

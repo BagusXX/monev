@@ -32,14 +32,25 @@
                         <p class="text-sm text-gray-500 mt-1">Pilih bulan untuk melihat laporan kegiatan.</p>
                     </div>
 
-                    <form method="GET" action="{{ route('laporan.kegiatan') }}" class="flex items-end gap-3">
+                    <form id="kegiatanFilterForm" method="GET" action="{{ route('laporan.kegiatan') }}" class="flex items-end gap-3">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">📅 Bulan</label>
                             <input type="month" name="bulan" value="{{ $bulan }}"
-                                class="px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" />
+                                class="px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition" />
                         </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">🏷️ Daerah</label>
+                            <select name="daerah" class="px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition">
+                                <option value="">Semua Daerah</option>
+                                @foreach($daerahs as $d)
+                                    <option value="{{ $d->id }}" {{ (isset($daerahId) && $daerahId == $d->id) ? 'selected' : '' }}>{{ $d->nama }} - {{ $d->kode }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <button type="submit"
-                            class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg hover:shadow-lg font-bold transition">
+                            class="px-6 py-2.5 bg-gradient-to-r from-yellow-600 to-amber-600 text-white rounded-lg hover:shadow-lg font-bold transition">
                             🔎 Tampilkan
                         </button>
                     </form>
@@ -60,17 +71,7 @@
                     </div>
                 </div>
 
-                <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="p-6 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-emerald-200 shadow-md hover:shadow-lg transition">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <div class="text-sm font-semibold text-emerald-700">💰 Total Anggaran</div>
-                                <div class="text-3xl font-bold text-emerald-900 mt-1">Rp {{ number_format($totalAnggaran ?? 0, 0, ',', '.') }}</div>
-                            </div>
-                            <div class="text-5xl opacity-20">💵</div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
 
             <div class="bg-white border-2 border-gray-200 rounded-xl p-6 shadow-lg print:shadow-none">
@@ -102,32 +103,40 @@
                                 <div class="p-4 border-t-2 border-gray-200 bg-gray-50">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-800">
                                         <div class="p-3 bg-white rounded-lg border border-gray-200">
-                                            <div class="text-xs font-bold text-blue-700 uppercase mb-1">📅 Tanggal Pelaksanaan</div>
+                                            <div class="text-xs font-bold text-yellow-700 uppercase mb-1">📅 Tanggal Pelaksanaan</div>
+                
+                                    <div id="kegiatanResults">
+                                        @include('laporan.partials.kegiatan_list')
                                             <div class="text-gray-900">{{ optional($kegiatan->tanggal_pelaksanaan)?->format('d-m-Y') ?? '-' }}</div>
                                         </div>
 
                                         <div class="p-3 bg-white rounded-lg border border-gray-200">
-                                            <div class="text-xs font-bold text-blue-700 uppercase mb-1">🎯 Nama Kegiatan</div>
+                                            <div class="text-xs font-bold text-yellow-700 uppercase mb-1">🎯 Nama Kegiatan</div>
                                             <div class="text-gray-900">{{ $kegiatan->nama_kegiatan }}</div>
                                         </div>
 
                                         <div class="p-3 bg-white rounded-lg border border-gray-200">
-                                            <div class="text-xs font-bold text-blue-700 uppercase mb-1">👨‍💼 Penanggung Jawab</div>
-                                            <div class="text-gray-900">{{ $kegiatan->penanggung_jawab }}</div>
+                                            <div class="text-xs font-bold text-yellow-700 uppercase mb-1">🏛️ Bidang</div>
+                                            <div class="text-gray-900">{{ $kegiatan->bidang ?? '-' }}</div>
                                         </div>
 
                                         <div class="p-3 bg-white rounded-lg border border-gray-200">
-                                            <div class="text-xs font-bold text-blue-700 uppercase mb-1">👥 Peserta</div>
+                                            <div class="text-xs font-bold text-yellow-700 uppercase mb-1">👤 Pelaksana</div>
+                                            <div class="text-gray-900">{{ $kegiatan->pelaksana ?? '-' }}</div>
+                                        </div>
+
+                                        <div class="p-3 bg-white rounded-lg border border-gray-200">
+                                            <div class="text-xs font-bold text-yellow-700 uppercase mb-1">👥 Peserta</div>
                                             <div class="text-gray-900">{{ number_format($kegiatan->jumlah_peserta ?? 0, 0, ',', '.') }} orang</div>
                                         </div>
 
                                         <div class="p-3 bg-white rounded-lg border border-gray-200">
-                                            <div class="text-xs font-bold text-blue-700 uppercase mb-1">💰 Anggaran</div>
+                                            <div class="text-xs font-bold text-yellow-700 uppercase mb-1">💰 Anggaran</div>
                                             <div class="text-gray-900 font-semibold">Rp {{ number_format($kegiatan->anggaran ?? 0, 0, ',', '.') }}</div>
                                         </div>
 
                                         <div class="p-3 bg-white rounded-lg border border-gray-200 col-span-1 sm:col-span-2">
-                                            <div class="text-xs font-bold text-blue-700 uppercase mb-1">📝 Keterangan / Uraian</div>
+                                            <div class="text-xs font-bold text-yellow-700 uppercase mb-1">📝 Keterangan / Uraian</div>
                                             <div class="whitespace-pre-line text-sm text-gray-700">
                                                 {{ $kegiatan->uraian ?? 'Tidak ada keterangan tambahan.' }}
                                             </div>
@@ -162,4 +171,46 @@
 
         summary::-webkit-details-marker { display: none; }
     </style>
+
+    <script>
+        (function(){
+            const form = document.getElementById('kegiatanFilterForm');
+            const results = document.getElementById('kegiatanResults');
+
+            if (!form || !results) return;
+
+            async function fetchAndReplace(url) {
+                try {
+                    const res = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                    const html = await res.text();
+                    results.innerHTML = html;
+                    attachPaginationHandlers();
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            form.addEventListener('submit', function(e){
+                e.preventDefault();
+                const data = new FormData(form);
+                const url = new URL(form.action, location.origin);
+                for (const [k,v] of data.entries()) url.searchParams.set(k, v);
+                fetchAndReplace(url.toString());
+                history.pushState({}, '', url);
+            });
+
+            function attachPaginationHandlers(){
+                const pagLinks = results.querySelectorAll('.pagination a, nav .w-5');
+                results.querySelectorAll('.pagination a').forEach(a=>{
+                    a.addEventListener('click', function(ev){
+                        ev.preventDefault();
+                        fetchAndReplace(a.href);
+                        history.pushState({}, '', a.href);
+                    });
+                });
+            }
+
+            attachPaginationHandlers();
+        })();
+    </script>
 </x-app-layout>

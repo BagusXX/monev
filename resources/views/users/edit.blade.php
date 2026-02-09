@@ -20,60 +20,25 @@
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
-                        <!-- Wilayah -->
-                        @php
-                            $defaultJenis = $user->kota_id ? 'kota' : ($user->kabupaten_id ? 'kabupaten' : null);
-                            $jenis = old('jenis_wilayah', $defaultJenis);
-                        @endphp
+                        <!-- Daerah -->
                         <div class="border rounded-lg p-4">
-                            <div class="font-semibold text-gray-800 mb-1">Wilayah User</div>
-                            <p class="text-sm text-gray-500 mb-3">Pilih asal wilayah user (contoh: Kota Semarang).</p>
+                            <div class="font-semibold text-gray-800 mb-1">Daerah User</div>
+                            <p class="text-sm text-gray-500 mb-3">Pilih asal daerah user (contoh: Kota Semarang - 33.74).</p>
 
-                            <div class="flex flex-wrap gap-6">
-                                <label class="flex items-center gap-2">
-                                    <input type="radio" name="jenis_wilayah" value="kota"
-                                        {{ $jenis === 'kota' ? 'checked' : '' }}
-                                        onclick="toggleWilayah('kota')">
-                                    Kota
-                                </label>
-                                <label class="flex items-center gap-2">
-                                    <input type="radio" name="jenis_wilayah" value="kabupaten"
-                                        {{ $jenis === 'kabupaten' ? 'checked' : '' }}
-                                        onclick="toggleWilayah('kabupaten')">
-                                    Kabupaten
-                                </label>
+                            <div>
+                                <x-input-label for="daerah_id" :value="__('Daerah')" />
+                                <select id="daerah_id" name="daerah_id" class="block mt-1 w-full rounded-md border-gray-300">
+                                    <option value="">- Pilih Daerah -</option>
+                                    @foreach($daerahs ?? [] as $daerah)
+                                        <option value="{{ $daerah->id }}"
+                                            {{ (string)old('daerah_id', $user->daerah_id) === (string)$daerah->id ? 'selected' : '' }}>
+                                            {{ $daerah->nama }} - {{ $daerah->kode }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-                                <div id="pilihKota" class="hidden">
-                                    <x-input-label for="kota_id" :value="__('Kota')" />
-                                    <select id="kota_id" name="kota_id" class="block mt-1 w-full rounded-md border-gray-300">
-                                        <option value="">- Pilih Kota -</option>
-                                        @foreach($kotas ?? [] as $kota)
-                                            <option value="{{ $kota->id }}"
-                                                {{ (string)old('kota_id', $user->kota_id) === (string)$kota->id ? 'selected' : '' }}>
-                                                {{ $kota->nama }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div id="pilihKabupaten" class="hidden">
-                                    <x-input-label for="kabupaten_id" :value="__('Kabupaten')" />
-                                    <select id="kabupaten_id" name="kabupaten_id" class="block mt-1 w-full rounded-md border-gray-300">
-                                        <option value="">- Pilih Kabupaten -</option>
-                                        @foreach($kabupatens ?? [] as $kabupaten)
-                                            <option value="{{ $kabupaten->id }}"
-                                                {{ (string)old('kabupaten_id', $user->kabupaten_id) === (string)$kabupaten->id ? 'selected' : '' }}>
-                                                {{ $kabupaten->nama }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <x-input-error :messages="$errors->get('kota_id')" class="mt-2" />
-                            <x-input-error :messages="$errors->get('kabupaten_id')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('daerah_id')" class="mt-2" />
                         </div>
 
                         <!-- Email Address -->
@@ -103,7 +68,7 @@
                         </div>
 
                         <div class="flex items-center justify-end gap-4">
-                            <a href="{{ route('setup') }}" class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300 focus:bg-gray-300 active:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            <a href="{{ route('setup') }}" class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300 focus:bg-gray-300 active:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                 {{ __('Batal') }}
                             </a>
                             <x-primary-button>
@@ -116,27 +81,4 @@
         </div>
     </div>
 
-    <script>
-        function toggleWilayah(jenis) {
-            const kotaBox = document.getElementById('pilihKota');
-            const kabBox = document.getElementById('pilihKabupaten');
-            const kotaSelect = document.getElementById('kota_id');
-            const kabSelect = document.getElementById('kabupaten_id');
-
-            if (jenis === 'kota') {
-                kotaBox.classList.remove('hidden');
-                kabBox.classList.add('hidden');
-                kabSelect.value = '';
-            } else {
-                kabBox.classList.remove('hidden');
-                kotaBox.classList.add('hidden');
-                kotaSelect.value = '';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const jenis = document.querySelector('input[name="jenis_wilayah"]:checked')?.value;
-            if (jenis) toggleWilayah(jenis);
-        });
-    </script>
-</x-app-layout>
+    </x-app-layout>
