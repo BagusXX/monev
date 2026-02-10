@@ -43,7 +43,6 @@
                     </div>
                 </div>
             @endif
-
             {{-- Tombol untuk menampilkan / menyembunyikan form --}}
             @php
                 // ambil old rows (sama seperti sebelumnya)
@@ -62,7 +61,6 @@
                 })->isNotEmpty();
                 $showForm = $errors->any() || $hasOldInput;
             @endphp
-
             <!-- Form Input Section -->
             <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition">
                 <div class="flex items-center justify-between mb-6">
@@ -81,14 +79,12 @@
                         </button>
                     </div>
                 </div>
-
                 <div class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-700 flex items-start gap-2">
                     <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zm-11-1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"/></svg>
                     <div>
                         <strong>💡 Tips:</strong> Format angka seperti <span class="font-mono bg-white px-2 py-1 rounded">2.500.000</span> akan otomatis dirapi.
                     </div>
                 </div>
-
                 {{-- Form dibungkus dan disembunyikan jika $showForm false --}}
                 <div id="form-wrapper" class="transition-all duration-300 {{ $showForm ? '' : 'hidden' }}">
                     <form method="POST" action="{{ route('monitoring.kegiatan.store') }}" class="space-y-4" id="form-kegiatan">
@@ -119,7 +115,7 @@
                                             <label class="text-sm font-semibold text-gray-700 block mb-2">🏛️ Bidang <span class="text-red-500">*</span></label>
                                             <input type="text" name="kegiatan[{{ $idx }}][bidang]" value="{{ $row['bidang'] ?? '' }}" required
                                                 class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
-                                                placeholder="Contoh: Bidang Organisasi" />
+                                                placeholder="Contoh: Bidang" />
                                         </div>
                                         <div>
                                             <label class="text-sm font-semibold text-gray-700 block mb-2">📅 Tanggal Pelaksanaan <span class="text-red-500">*</span></label>
@@ -175,7 +171,6 @@
             </div>
         </div>
     </div>
-
     <template id="kegiatan-row-tpl">
         <div class="kegiatan-row border-2 border-yellow-200 rounded-lg p-5 bg-gradient-to-br from-yellow-50 to-amber-50 hover:shadow-md transition" data-index="__IDX__">
             <div class="flex justify-between items-center mb-4">
@@ -200,7 +195,7 @@
                     <label class="text-sm font-semibold text-gray-700 block mb-2">🏛️ Bidang <span class="text-red-500">*</span></label>
                     <input type="text" name="kegiatan[__IDX__][bidang]" required
                         class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
-                        placeholder="Contoh: Bidang Organisasi" />
+                        placeholder="Contoh: Bidang" />
                 </div>
                 <div>
                     <label class="text-sm font-semibold text-gray-700 block mb-2">📅 Tanggal Pelaksanaan <span class="text-red-500">*</span></label>
@@ -232,12 +227,7 @@
                 </div>
             </div>
         </div>
-                        placeholder="Contoh: 2500000" />
-                </div>
-            </div>
-        </div>
     </template>
-
     <script>
         (function () {
             const container = document.getElementById('kegiatan-rows');

@@ -124,8 +124,8 @@
                 'uraian_bidang' => $rapat->uraian_bidang ?? '',
                 'rapat_kpd' => $rapat->rapat_kpd ?? false,
                 'uraian_kpd' => $rapat->uraian_kpd ?? '',
-                'rapat_dewan' => $rapat->rapat_dewan ?? false,
-                'uraian_dewan' => $rapat->uraian_dewan ?? '',
+                'rapat_pks' => $rapat->rapat_pks ?? false,
+                'uraian_pks' => $rapat->uraian_pks ?? '',
             ];
         })->keyBy('id')) !!};
 
@@ -160,7 +160,7 @@
                             ${renderQuestion(3, 'Apakah ada rapat pimpinan (KSB DPD & KSB DPC)?', rapat.rapat_pimpinan, rapat.uraian_pimpinan)}
                             ${renderQuestion(4, 'Apakah ada rapat bidang (KSB dengan bidang tertentu)?', rapat.rapat_bidang, rapat.uraian_bidang)}
                             ${renderQuestion(5, 'Apakah ada rapat bersama KPD?', rapat.rapat_kpd, rapat.uraian_kpd)}
-                            ${renderQuestion(6, 'Apakah ada rapat bersama anggota Dewan?', rapat.rapat_dewan, rapat.uraian_dewan)}
+                            ${renderQuestion(6, 'Apakah ada rapat dengan anggota Dewan atau fraksi PKS?', rapat.rapat_pks, rapat.uraian_pks)}
                         </div>
                     </div>
                 </div>

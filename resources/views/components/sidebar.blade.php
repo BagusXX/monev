@@ -1,11 +1,14 @@
-<div x-data="{ open: false, collapsed: false }" x-on:sidebar-toggle.window="open = !open" x-on:sidebar-close.window="open = false" x-on:sidebar-collapse.window="collapsed = !collapsed">
+<div x-data="{ open: false, collapsed: false }"
+    x-on:sidebar-toggle.window="open = !open; document.body.classList.toggle('overflow-hidden', open); if (open) $nextTick(()=> $refs.firstLink?.focus())"
+    x-on:sidebar-close.window="open = false; document.body.classList.remove('overflow-hidden')"
+    x-on:sidebar-collapse.window="collapsed = !collapsed">
     <!-- Mobile overlay -->
-    <div x-show="open" @click="open = false" x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-600 bg-opacity-75 z-30 lg:hidden"></div>
+    <div x-show="open" @click="open = false; document.body.classList.remove('overflow-hidden')" x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-600 bg-opacity-75 z-30 lg:hidden"></div>
 
-    <aside @click.away="if (window.innerWidth < 1024) open = false" class="fixed left-0 top-0 z-40 h-screen bg-white border-r border-gray-200 shadow-lg transform -translate-x-full lg:translate-x-0 transition-all duration-300 ease-in-out" :class="{ 'translate-x-0': open, 'w-64': !collapsed, 'w-20': collapsed && window.innerWidth >= 1024 }">
+    <aside id="sidebar" @click.away="if (window.innerWidth < 1024) open = false" class="fixed left-0 top-0 z-40 h-screen bg-white border-r border-gray-200 shadow-lg transform -translate-x-full lg:translate-x-0 transition-all duration-300 ease-in-out" :class="{ 'translate-x-0': open, 'w-64': !collapsed, 'w-20': collapsed && window.innerWidth >= 1024 }" :aria-hidden="window.innerWidth < 1024 ? !open : false">
         <!-- Mobile menu close button -->
         <div class="lg:hidden absolute top-4 right-4">
-            <button @click="open = false" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+            <button @click="open = false; document.body.classList.remove('overflow-hidden')" aria-label="Tutup menu" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -38,7 +41,7 @@
 
         <!-- Navigation Menu -->
         <nav class="space-y-2">
-            <x-sidebar-link :href="route('home')" :active="request()->routeIs('home')">
+            <x-sidebar-link x-ref="firstLink" :href="route('home')" :active="request()->routeIs('home')">
                 <span class="flex-shrink-0 w-6 h-6 mr-3 flex items-center justify-center">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />

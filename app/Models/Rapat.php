@@ -27,8 +27,8 @@ class Rapat extends Model
         'uraian_bidang',
         'rapat_kpd',
         'uraian_kpd',
-        'rapat_dewan',
-        'uraian_dewan',
+        'rapat_pks',
+        'uraian_pks',
     ];
 
     protected $casts = [
@@ -38,7 +38,7 @@ class Rapat extends Model
         'rapat_pimpinan' => 'boolean',
         'rapat_bidang' => 'boolean',
         'rapat_kpd' => 'boolean',
-        'rapat_dewan' => 'boolean',
+        'rapat_pks' => 'boolean',
     ];
 
     public function user(): BelongsTo

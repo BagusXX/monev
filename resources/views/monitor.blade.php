@@ -195,70 +195,70 @@
                     </div>
 
                     {{-- RAPAT 5 --}}
-<div class="border-2 border-amber-200 rounded-lg p-5 bg-gradient-to-br from-amber-50 to-amber-50 hover:shadow-sm transition mt-4">
-    <label class="font-bold text-gray-800 flex items-center gap-2">
-        <span class="bg-teal-600 text-white w-6 h-6 rounded-full text-center leading-6 text-sm">5</span>
-        🏛️ Apakah ada rapat bersama KPD?
-    </label>
-    <div class="mt-3 flex gap-6">
-        <label class="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="rapat_kpd" value="iya"
-                {{ old('rapat_kpd') === 'iya' ? 'checked' : '' }}
-                onclick="toggleField('kpd', true)">
-            <span>✅ Iya</span>
-        </label>
-        <label class="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="rapat_kpd" value="tidak"
-                {{ old('rapat_kpd') === 'tidak' ? 'checked' : '' }}
-                onclick="toggleField('kpd', false)">
-            <span>❌ Tidak</span>
-        </label>
-    </div>
-    <div id="kpd" class="mt-4 hidden">
-        <label class="text-sm font-semibold text-gray-700 block mb-2">
-            💬 Jelaskan detail rapat bersama KPD:
-        </label>
-        <textarea name="uraian_kpd" rows="3"
-            class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300"
-            placeholder="Uraian rapat bersama KPD...">{{ old('uraian_kpd') }}</textarea>
-    </div>
-</div>
+                    <div class="border-2 border-amber-200 rounded-lg p-5 bg-gradient-to-br from-amber-50 to-amber-50 hover:shadow-sm transition mt-4">
+                        <label class="font-bold text-gray-800 flex items-center gap-2">
+                            <span class="bg-teal-600 text-white w-6 h-6 rounded-full text-center leading-6 text-sm">5</span>
+                            🏛️ Apakah ada rapat bersama KPD?
+                        </label>
+                        <div class="mt-3 flex gap-6">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="rapat_kpd" value="iya"
+                                    {{ old('rapat_kpd') === 'iya' ? 'checked' : '' }}
+                                    onclick="toggleField('kpd', true)">
+                                <span>✅ Iya</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="rapat_kpd" value="tidak"
+                                    {{ old('rapat_kpd') === 'tidak' ? 'checked' : '' }}
+                                    onclick="toggleField('kpd', false)">
+                                <span>❌ Tidak</span>
+                            </label>
+                        </div>
+                        <div id="kpd" class="mt-4 hidden">
+                            <label class="text-sm font-semibold text-gray-700 block mb-2">
+                                💬 Jelaskan detail rapat bersama KPD:
+                            </label>
+                            <textarea name="uraian_kpd" rows="3"
+                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300"
+                                placeholder="Uraian rapat bersama KPD...">{{ old('uraian_kpd') }}</textarea>
+                        </div>
+                    </div>
 
 
-{{-- RAPAT 6 --}}
-<div class="border-2 border-rose-200 rounded-lg p-4 bg-rose-50">
-    <label class="flex items-center gap-3 font-semibold text-gray-800 cursor-pointer">
-        <span class="bg-rose-600 text-white w-6 h-6 rounded-full text-center leading-6 text-sm">6</span>
-        👥 Apakah ada rapat bersama anggota Dewan?
-    </label>
-    <div class="mt-3 flex gap-6">
-        <label class="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="rapat_dewan" value="iya"
-                {{ old('rapat_dewan') === 'iya' ? 'checked' : '' }}
-                onclick="toggleField('dewan', true)">
-            <span>✅ Iya</span>
-        </label>
-        <label class="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="rapat_dewan" value="tidak"
-                {{ old('rapat_dewan') === 'tidak' ? 'checked' : '' }}
-                onclick="toggleField('dewan', false)">
-            <span>❌ Tidak</span>
-        </label>
-    </div>
-    <div id="dewan" class="mt-4 hidden">
-        <label class="text-sm font-semibold text-gray-700 block mb-2">
-            💬 Jelaskan detail rapat bersama anggota Dewan:
-        </label>
-        <textarea name="uraian_dewan" rows="3"
-            class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300"
-            placeholder="Uraian rapat bersama anggota Dewan...">{{ old('uraian_dewan') }}</textarea>
-    </div>
-</div>
+                    {{-- RAPAT 6 --}}
+                    <div class="border-2 border-purple-200 rounded-lg p-5 bg-purple-50 mt-4">
+                        <label class="flex items-center gap-3 font-semibold text-gray-800 cursor-pointer">
+                            <span class="bg-purple-600 text-white w-6 h-6 rounded-full text-center leading-6 text-sm">6</span>
+                            🏛️ Apakah ada rapat dengan anggota Dewan atau fraksi PKS?
+                        </label>
+                        <div class="mt-3 flex gap-6">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="rapat_pks" value="iya"
+                                    {{ old('rapat_pks') === 'iya' ? 'checked' : '' }}
+                                    onclick="toggleField('pks', true)">
+                                <span>✅ Iya</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="rapat_pks" value="tidak"
+                                    {{ old('rapat_pks') === 'tidak' ? 'checked' : '' }}
+                                    onclick="toggleField('pks', false)">
+                                <span>❌ Tidak</span>
+                            </label>
+                        </div>
+                        <div id="pks" class="mt-4 hidden">
+                            <label class="text-sm font-semibold text-gray-700 block mb-2">
+                                💬 Jelaskan detail rapat dengan anggota Dewan atau fraksi PKS:
+                            </label>
+                            <textarea name="uraian_pks" rows="3"
+                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300"
+                                placeholder="Uraian rapat dengan anggota Dewan atau fraksi PKS...">{{ old('uraian_pks') }}</textarea>
+                        </div>
+                    </div>
 
                     <div class="flex justify-end pt-6 border-t-2 border-gray-200 mt-6">
                         <button type="submit"
                             class="px-7 py-2.5 bg-gradient-to-r from-yellow-600 to-yellow-600 text-white rounded-lg hover:shadow-lg transition font-bold text-sm flex items-center gap-2">
-                            <span>✅</span> Simpan Data Monitoring
+                            <span>✅</span> Simpan
                         </button>
                     </div>
                 </div>
@@ -345,7 +345,7 @@
             if (document.querySelector('input[name="rapat_pimpinan"][value="iya"]:checked')) toggleField('pimpinan', true);
             if (document.querySelector('input[name="rapat_bidang"][value="iya"]:checked')) toggleField('bidang', true);
             if (document.querySelector('input[name="rapat_kpd"][value="iya"]:checked')) toggleField('kpd', true);
-            if (document.querySelector('input[name="rapat_dewan"][value="iya"]:checked')) toggleField('dewan', true);
+            if (document.querySelector('input[name="rapat_pks"][value="iya"]:checked')) toggleField('pks', true);
 
         });
     </script>

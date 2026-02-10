@@ -41,7 +41,7 @@ class MonitoringRapatController extends Controller
         }
 
         // Normalisasi uraian: kosong -> null
-        foreach (['uraian_dptd', 'uraian_phdpd', 'uraian_pimpinan', 'uraian_bidang', 'uraian_kpd', 'uraian_dewan'] as $key) {
+        foreach (['uraian_dptd', 'uraian_phdpd', 'uraian_pimpinan', 'uraian_bidang', 'uraian_kpd', 'uraian_dewan', 'uraian_pks'] as $key) {
             if (!isset($data[$key]) || $data[$key] === '') {
                 $data[$key] = null;
             }
