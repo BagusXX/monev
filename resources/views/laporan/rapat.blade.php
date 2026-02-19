@@ -29,16 +29,16 @@
                         <p class="text-sm text-gray-500 mt-1">Pilih bulan untuk melihat laporan rapat.</p>
                     </div>
 
-                    <form id="rapatFilterForm" method="GET" action="{{ route('laporan.rapat') }}" class="flex items-end gap-3">
-                        <div>
+                    <form id="rapatFilterForm" method="GET" action="{{ route('laporan.rapat') }}" class="w-full md:w-auto flex flex-col sm:flex-row items-end gap-3">
+                        <div class="w-full sm:w-auto">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">📅 Bulan</label>
                             <input type="month" name="bulan" value="{{ $bulan }}"
-                                class="px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition" />
+                                class="w-full sm:w-auto px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition" />
                         </div>
 
-                        <div>
+                        <div class="w-full sm:w-auto">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">🏷️ Daerah</label>
-                            <select name="daerah" class="px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition">
+                            <select name="daerah" class="w-full sm:w-auto px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition">
                                 <option value="">Semua Daerah</option>
                                 @foreach($daerahs as $d)
                                     <option value="{{ $d->id }}" {{ (isset($daerahId) && $daerahId == $d->id) ? 'selected' : '' }}>{{ $d->nama }} - {{ $d->kode }}</option>
@@ -47,7 +47,7 @@
                         </div>
 
                         <button type="submit"
-                            class="px-6 py-2.5 bg-gradient-to-r from-yellow-600 to-amber-600 text-white rounded-lg hover:shadow-lg font-bold transition">
+                            class="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-yellow-600 to-amber-600 text-white rounded-lg hover:shadow-lg font-bold transition">
                             🔎 Tampilkan
                         </button>
                     </form>
@@ -122,8 +122,8 @@
                 'uraian_pimpinan' => $rapat->uraian_pimpinan ?? '',
                 'rapat_bidang' => $rapat->rapat_bidang,
                 'uraian_bidang' => $rapat->uraian_bidang ?? '',
-                'rapat_kpd' => $rapat->rapat_kpd ?? false,
-                'uraian_kpd' => $rapat->uraian_kpd ?? '',
+                'rapat_kdd' => $rapat->rapat_kdd ?? false,
+                'uraian_kdd' => $rapat->uraian_kdd ?? '',
                 'rapat_pks' => $rapat->rapat_pks ?? false,
                 'uraian_pks' => $rapat->uraian_pks ?? '',
             ];
@@ -135,31 +135,30 @@
 
             const html = `
                 <div class="space-y-6">
-                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded">
-                        <p class="text-xs text-gray-500">Tanggal Pengisian</p>
-                        <p class="font-bold text-lg text-gray-900">${rapat.tanggal} • ${rapat.waktu}</p>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-gray-50 p-4 rounded">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-3 rounded">
                             <p class="text-xs text-gray-500">Nama User</p>
-                            <p class="font-semibold text-gray-900">${rapat.user_name}</p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded">
-                            <p class="text-xs text-gray-500">Daerah</p>
-                            <p class="font-semibold text-gray-900">${rapat.wilayah}</p>
+                            <p class="font-semibold text-sm text-gray-900">${rapat.user_name}</p>
+
+                            <p class="text-xs text-gray-500 mt-2">Tanggal Pengisian</p>
+                            <p class="text-sm text-gray-700">${rapat.tanggal} • ${rapat.waktu}</p>
                         </div>
                     </div>
 
                     <div class="border-t-2 border-gray-200 pt-6">
                         <h4 class="font-bold text-gray-900 mb-4">📋 Detail Uraian Rapat</h4>
+
+                        <div class="mb-4 bg-gray-50 p-3 rounded">
+                            <p class="text-xs text-gray-500">Daerah</p>
+                            <p class="text-sm font-medium text-gray-900">${rapat.wilayah}</p>
+                        </div>
                         
                         <div class="space-y-4">
                             ${renderQuestion(1, 'Apakah ada rapat DPTD?', rapat.rapat_dptd, rapat.uraian_dptd)}
                             ${renderQuestion(2, 'Apakah ada rapat PH DPD (KSB & KABID)?', rapat.rapat_phdpd, rapat.uraian_phdpd)}
                             ${renderQuestion(3, 'Apakah ada rapat pimpinan (KSB DPD & KSB DPC)?', rapat.rapat_pimpinan, rapat.uraian_pimpinan)}
                             ${renderQuestion(4, 'Apakah ada rapat bidang (KSB dengan bidang tertentu)?', rapat.rapat_bidang, rapat.uraian_bidang)}
-                            ${renderQuestion(5, 'Apakah ada rapat bersama KPD?', rapat.rapat_kpd, rapat.uraian_kpd)}
+                            ${renderQuestion(5, 'Apakah ada rapat bersama KDD?', rapat.rapat_kdd, rapat.uraian_kdd)}
                             ${renderQuestion(6, 'Apakah ada rapat dengan anggota Dewan atau fraksi PKS?', rapat.rapat_pks, rapat.uraian_pks)}
                         </div>
                     </div>

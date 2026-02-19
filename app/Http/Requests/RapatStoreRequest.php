@@ -35,13 +35,13 @@ class RapatStoreRequest extends FormRequest
             'rapat_phdpd' => $toBoolInt($this->rapat_phdpd),
             'rapat_pimpinan' => $toBoolInt($this->rapat_pimpinan),
             'rapat_bidang' => $toBoolInt($this->rapat_bidang),
-            'rapat_kpd' => $toBoolInt($this->rapat_kpd),
+            'rapat_kdd' => $toBoolInt($this->rapat_kdd),
             'rapat_pks' => $toBoolInt($this->rapat_pks),
             'uraian_dptd' => is_string($this->uraian_dptd) ? trim($this->uraian_dptd) : $this->uraian_dptd,
             'uraian_phdpd' => is_string($this->uraian_phdpd) ? trim($this->uraian_phdpd) : $this->uraian_phdpd,
             'uraian_pimpinan' => is_string($this->uraian_pimpinan) ? trim($this->uraian_pimpinan) : $this->uraian_pimpinan,
             'uraian_bidang' => is_string($this->uraian_bidang) ? trim($this->uraian_bidang) : $this->uraian_bidang,
-            'uraian_kpd' => is_string($this->uraian_kpd) ? trim($this->uraian_kpd) : $this->uraian_kpd,
+            'uraian_kdd' => is_string($this->uraian_kdd) ? trim($this->uraian_kdd) : $this->uraian_kdd,
             'uraian_pks' => is_string($this->uraian_pks) ? trim($this->uraian_pks) : $this->uraian_pks,
         ]);
     }
@@ -68,8 +68,8 @@ class RapatStoreRequest extends FormRequest
             'rapat_bidang' => ['required', 'boolean'],
             'uraian_bidang' => ['nullable', 'string'],
 
-            'rapat_kpd' => ['nullable', 'boolean'],
-            'uraian_kpd' => ['nullable', 'string'],
+            'rapat_kdd' => ['nullable', 'boolean'],
+            'uraian_kdd' => ['nullable', 'string'],
 
             'rapat_pks' => ['nullable', 'boolean'],
             'uraian_pks' => ['nullable', 'string'],

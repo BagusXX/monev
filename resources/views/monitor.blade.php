@@ -198,29 +198,29 @@
                     <div class="border-2 border-amber-200 rounded-lg p-5 bg-gradient-to-br from-amber-50 to-amber-50 hover:shadow-sm transition mt-4">
                         <label class="font-bold text-gray-800 flex items-center gap-2">
                             <span class="bg-teal-600 text-white w-6 h-6 rounded-full text-center leading-6 text-sm">5</span>
-                            🏛️ Apakah ada rapat bersama KPD?
+                            🏛️ Apakah ada rapat bersama KDD?
                         </label>
                         <div class="mt-3 flex gap-6">
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="rapat_kpd" value="iya"
-                                    {{ old('rapat_kpd') === 'iya' ? 'checked' : '' }}
-                                    onclick="toggleField('kpd', true)">
+                                <input type="radio" name="rapat_kdd" value="iya"
+                                    {{ old('rapat_kdd') === 'iya' ? 'checked' : '' }}
+                                    onclick="toggleField('kdd', true)">
                                 <span>✅ Iya</span>
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="rapat_kpd" value="tidak"
-                                    {{ old('rapat_kpd') === 'tidak' ? 'checked' : '' }}
-                                    onclick="toggleField('kpd', false)">
+                                <input type="radio" name="rapat_kdd" value="tidak"
+                                    {{ old('rapat_kdd') === 'tidak' ? 'checked' : '' }}
+                                    onclick="toggleField('kdd', false)">
                                 <span>❌ Tidak</span>
                             </label>
                         </div>
-                        <div id="kpd" class="mt-4 hidden">
+                        <div id="kdd" class="mt-4 hidden">
                             <label class="text-sm font-semibold text-gray-700 block mb-2">
-                                💬 Jelaskan detail rapat bersama KPD:
+                                💬 Jelaskan detail rapat bersama KDD:
                             </label>
-                            <textarea name="uraian_kpd" rows="3"
+                            <textarea name="uraian_kdd" rows="3"
                                 class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300"
-                                placeholder="Uraian rapat bersama KPD...">{{ old('uraian_kpd') }}</textarea>
+                                placeholder="Uraian rapat bersama KDD...">{{ old('uraian_kdd') }}</textarea>
                         </div>
                     </div>
 
@@ -344,7 +344,7 @@
             if (document.querySelector('input[name="rapat_phdpd"][value="iya"]:checked')) toggleField('phdpd', true);
             if (document.querySelector('input[name="rapat_pimpinan"][value="iya"]:checked')) toggleField('pimpinan', true);
             if (document.querySelector('input[name="rapat_bidang"][value="iya"]:checked')) toggleField('bidang', true);
-            if (document.querySelector('input[name="rapat_kpd"][value="iya"]:checked')) toggleField('kpd', true);
+            if (document.querySelector('input[name="rapat_kdd"][value="iya"]:checked')) toggleField('kdd', true);
             if (document.querySelector('input[name="rapat_pks"][value="iya"]:checked')) toggleField('pks', true);
 
         });

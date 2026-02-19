@@ -100,11 +100,42 @@
             .sidebar-collapsed .hidden-lg-inline {
                 display: none !important;
             }
+            
+            /* Mobile responsive improvements */
+            @media (max-width: 1023px) {
+                .main-content-wrapper {
+                    margin-left: 0 !important;
+                }
+                
+                main {
+                    padding-bottom: 5rem; /* Space for bottom mobile nav */
+                }
+            }
+            
+            /* Scrollbar hide for custom scrolling */
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            
+            /* Smooth tap feedback for mobile */
+            @media (hover: none) {
+                button, a {
+                    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
+                }
+            }
         </style>
     </head>
     <body class="font-sans antialiased bg-gray-50">
+        <!-- Mobile Bottom Navigation (Optional - uncomment to use instead of sidebar drawer) -->
+        <!-- <x-mobile-bottom-nav /> -->
+        
         <div class="min-h-screen bg-gray-50 flex">
-            <!-- Sidebar -->
+            <!-- Sidebar Drawer -->
             <x-sidebar />
 
             <!-- Main Content Area -->
@@ -114,7 +145,7 @@
                 <!-- Page Heading -->
                 @isset($header)
                     <header class="bg-white shadow-sm border-b border-gray-200">
-                        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                             {{ $header }}
                         </div>
                     </header>
@@ -134,3 +165,4 @@
         @stack('scripts')
     </body>
 </html>
+

@@ -40,7 +40,8 @@
                     <h3 class="text-xl font-bold text-gray-900 mb-2">📋 Daftar Daerah</h3>
                     <p class="text-gray-600 text-sm mb-6">Total: <span class="font-bold text-yellow-600">{{ $daerahs->total() }}</span> daerah</p>
 
-                    <div class="overflow-x-auto">
+                    <!-- Desktop/Table view -->
+                    <div class="hidden sm:block overflow-x-auto">
                         <table class="w-full">
                             <thead>
                                 <tr class="bg-gradient-to-r from-yellow-50 to-amber-50 border-b-2 border-gray-200">
@@ -92,6 +93,41 @@
                             </tbody>
                         </table>
                     </div>
+
+                        <!-- Mobile/List view -->
+                        <div class="sm:hidden space-y-3">
+                            @forelse($daerahs as $index => $daerah)
+                                <div class="bg-white p-4 border-2 border-gray-200 rounded-lg shadow-sm">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="text-lg">🏛️</span>
+                                                <div>
+                                                    <div class="font-semibold text-gray-900">{{ $daerah->nama }}</div>
+                                                    <div class="text-xs text-yellow-700 font-bold bg-yellow-50 inline-block px-2 py-0.5 rounded mt-1">{{ $daerah->kode }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="text-xs text-gray-500">No. {{ $daerahs->firstItem() + $index }}</div>
+                                        </div>
+
+                                        <div class="flex flex-col items-end gap-2">
+                                            <a href="{{ route('daerah.edit', $daerah) }}" class="w-28 text-center px-3 py-2 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition text-sm">✏️ Edit</a>
+                                            <form action="{{ route('daerah.destroy', $daerah) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus daerah ini?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="w-28 text-center px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition text-sm">🗑️ Hapus</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="bg-white p-6 border-2 border-gray-200 rounded-lg text-center">
+                                    <span class="text-4xl">📭</span>
+                                    <p class="font-medium mt-2">Tidak ada data daerah.</p>
+                                    <a href="{{ route('daerah.create') }}" class="text-yellow-600 hover:text-yellow-800 underline text-sm mt-2 inline-block">Buat daerah baru</a>
+                                </div>
+                            @endforelse
+                        </div>
 
                     @if($daerahs->hasPages())
                         <div class="mt-6">

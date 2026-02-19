@@ -22,7 +22,7 @@
                             </h3>
                             <p class="text-sm text-gray-500 mt-1">Kelola dan administrasi pengguna sistem</p>
                         </div>
-                        <a href="{{ route('users.create') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-yellow-600 to-amber-600 border border-transparent rounded-lg font-bold text-sm text-white uppercase tracking-wider hover:shadow-lg hover:from-yellow-700 hover:to-amber-700 active:from-yellow-800 active:to-amber-800 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition">
+                        <a href="{{ route('users.create') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-yellow-600 to-amber-600 border border-transparent rounded-lg font-bold text-sm text-white uppercase tracking-wider hover:shadow-lg hover:from-yellow-700 hover:to-amber-700 active:from-yellow-800 active:to-amber-800 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition">
                             <span>➕</span> {{ __('Tambah User') }}
                         </a>
                     </div>
@@ -34,7 +34,7 @@
                         </div>
                     @endif
 
-                    <div class="overflow-x-auto rounded-xl border-2 border-gray-200 shadow-md">
+                    <div class="overflow-x-auto rounded-xl border-2 border-gray-200 shadow-md hidden sm:block">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gradient-to-r from-yellow-50 to-amber-50">
                                 <tr>
@@ -122,6 +122,91 @@
                                 @endforelse
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Mobile Card View -->
+                    <div class="sm:hidden space-y-3">
+                        @forelse($users ?? [] as $user)
+                            <div class="bg-white border-2 border-gray-200 rounded-lg p-4 {{ $user->is_rejected ? 'border-red-300 bg-red-50' : (!$user->is_approved && !$user->is_main_admin ? 'border-blue-300 bg-blue-50' : '') }}">
+                                <!-- User Header -->
+                                <div class="flex items-start justify-between mb-3">
+                                    <div class="flex-1">
+                                        <div class="font-bold text-gray-900">👤 {{ $user->name }}</div>
+                                        <div class="text-xs text-gray-600 mt-1">📧 {{ $user->email }}</div>
+                                    </div>
+                                    <div class="text-right ml-2">
+                                        @if($user->is_main_admin)
+                                            <span class="inline-block px-2 py-1 bg-gray-100 text-gray-800 rounded text-xs font-semibold">👑 Admin</span>
+                                        @elseif($user->is_rejected)
+                                            <span class="inline-block px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-semibold">❌ Ditolak</span>
+                                        @elseif(!$user->is_approved)
+                                            <span class="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-semibold">⏳ Menunggu</span>
+                                        @else
+                                            <span class="inline-block px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-semibold">✅ Disetujui</span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <!-- Wilayah -->
+                                <div class="text-xs text-gray-600 mb-3">
+                                    🗺️ <span class="inline-block bg-yellow-100 text-yellow-700 px-2 py-1 rounded">{{ $user->daerah_label }}</span>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="border-t border-gray-300 pt-3">
+                                    @if(!$user->is_main_admin)
+                                        @if($user->is_rejected)
+                                            <form action="{{ route('users.destroy', $user) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="w-full px-3 py-2 bg-red-50 text-red-600 rounded hover:bg-red-100 transition font-semibold text-xs">
+                                                    🗑️ Hapus
+                                                </button>
+                                            </form>
+                                        @elseif(!$user->is_approved)
+                                            @if(auth()->user()->is_main_admin)
+                                                <div class="flex gap-2">
+                                                    <form action="{{ route('users.approve', $user) }}" method="POST" class="flex-1">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" class="w-full px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition font-semibold text-xs">
+                                                            ✅ Setujui
+                                                        </button>
+                                                    </form>
+                                                    <form action="{{ route('users.reject', $user) }}" method="POST" class="flex-1" onsubmit="return confirm('Apakah Anda yakin ingin menolak user ini?');">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" class="w-full px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition font-semibold text-xs">
+                                                            ❌ Tolak
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @else
+                                                <p class="text-xs text-gray-500 text-center py-2">Menunggu persetujuan admin</p>
+                                            @endif
+                                        @else
+                                            <div class="flex gap-2">
+                                                <a href="{{ route('users.edit', $user) }}" class="flex-1 px-3 py-2 bg-yellow-50 text-yellow-600 rounded hover:bg-yellow-100 transition font-semibold text-xs text-center">
+                                                    ✏️ Edit
+                                                </a>
+                                                <form action="{{ route('users.destroy', $user) }}" method="POST" class="flex-1" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="w-full px-3 py-2 bg-red-50 text-red-600 rounded hover:bg-red-100 transition font-semibold text-xs">
+                                                        🗑️ Hapus
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endif
+                                    @endif
+                                </div>
+                            </div>
+                        @empty
+                            <div class="bg-white border-2 border-gray-200 rounded-lg p-6 text-center">
+                                <div class="text-4xl mb-2">📭</div>
+                                <p class="text-sm text-gray-500 font-medium">Tidak ada user. Buat user baru dengan klik tombol di atas.</p>
+                            </div>
+                        @endforelse
                     </div>
 
                     @if(isset($users) && $users->hasPages())

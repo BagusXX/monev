@@ -25,8 +25,8 @@ class Rapat extends Model
         'uraian_pimpinan',
         'rapat_bidang',
         'uraian_bidang',
-        'rapat_kpd',
-        'uraian_kpd',
+        'rapat_kdd',
+        'uraian_kdd',
         'rapat_pks',
         'uraian_pks',
     ];
@@ -37,7 +37,7 @@ class Rapat extends Model
         'rapat_phdpd' => 'boolean',
         'rapat_pimpinan' => 'boolean',
         'rapat_bidang' => 'boolean',
-        'rapat_kpd' => 'boolean',
+        'rapat_kdd' => 'boolean',
         'rapat_pks' => 'boolean',
     ];
 

@@ -28,6 +28,7 @@ class LaporanKegiatanController extends Controller
         }
 
         $kegiatans = (clone $baseQuery)
+            ->with('user.daerah', 'photos')
             ->orderBy('nama_kegiatan')
             ->paginate(20)
             ->withQueryString();
@@ -38,7 +39,7 @@ class LaporanKegiatanController extends Controller
         $daerahs = Daerah::orderBy('nama')->get();
 
         if ($request->ajax()) {
-            return view('laporan.partials.kegiatan_list', compact('kegiatans'));
+            return view('laporan.partials.kegiatan_list', compact('kegiatans', 'bulan', 'daerahId'));
         }
 
         return view('laporan.kegiatan', compact('bulan', 'kegiatans', 'totalPeserta', 'totalAnggaran', 'daerahs', 'daerahId'));

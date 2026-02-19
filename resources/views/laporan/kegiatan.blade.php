@@ -32,16 +32,16 @@
                         <p class="text-sm text-gray-500 mt-1">Pilih bulan untuk melihat laporan kegiatan.</p>
                     </div>
 
-                    <form id="kegiatanFilterForm" method="GET" action="{{ route('laporan.kegiatan') }}" class="flex items-end gap-3">
-                        <div>
+                    <form id="kegiatanFilterForm" method="GET" action="{{ route('laporan.kegiatan') }}" class="w-full md:w-auto flex flex-col sm:flex-row items-end gap-3">
+                        <div class="w-full sm:w-auto">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">📅 Bulan</label>
                             <input type="month" name="bulan" value="{{ $bulan }}"
-                                class="px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition" />
+                                class="w-full sm:w-auto px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition" />
                         </div>
 
-                        <div>
+                        <div class="w-full sm:w-auto">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">🏷️ Daerah</label>
-                            <select name="daerah" class="px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition">
+                            <select name="daerah" class="w-full sm:w-auto px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition">
                                 <option value="">Semua Daerah</option>
                                 @foreach($daerahs as $d)
                                     <option value="{{ $d->id }}" {{ (isset($daerahId) && $daerahId == $d->id) ? 'selected' : '' }}>{{ $d->nama }} - {{ $d->kode }}</option>
@@ -50,7 +50,7 @@
                         </div>
 
                         <button type="submit"
-                            class="px-6 py-2.5 bg-gradient-to-r from-yellow-600 to-amber-600 text-white rounded-lg hover:shadow-lg font-bold transition">
+                            class="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-yellow-600 to-amber-600 text-white rounded-lg hover:shadow-lg font-bold transition">
                             🔎 Tampilkan
                         </button>
                     </form>
@@ -124,12 +124,16 @@
                 'tema' => $kegiatan->tema,
                 'nama_kegiatan' => $kegiatan->nama_kegiatan,
                 'tanggal_pelaksanaan' => $tanggalPelaksanaan,
+                'tanggal_pengisian' => $kegiatan->created_at?->format('d/m/Y H:i') ?? '-',
                 'user_name' => $kegiatan->user?->name ?? '-',
+                'daerah_label' => $kegiatan->user?->daerah_label ?? '-',
                 'bidang' => $kegiatan->bidang ?? '-',
                 'pelaksana' => $kegiatan->pelaksana ?? '-',
                 'jumlah_peserta' => $kegiatan->jumlah_peserta ?? 0,
                 'anggaran' => $kegiatan->anggaran ?? 0,
-                'uraian' => $kegiatan->uraian ?? 'Tidak ada keterangan tambahan.',
+                'foto' => $kegiatan->foto ? str_replace('\\', '/', $kegiatan->foto) : null,
+                'photos' => $kegiatan->photos->map(fn($p) => str_replace('\\', '/', $p->foto_path))->toArray(),
+                'keterangan' => $kegiatan->keterangan ?? 'Tidak ada keterangan tambahan.',
             ];
         })->keyBy('id')) !!};
 
@@ -137,48 +141,81 @@
             const kegiatan = kegiatansData[kegiatanId];
             if (!kegiatan) return;
 
+            let fotoHtml;
+            if (kegiatan.photos && kegiatan.photos.length > 0) {
+                fotoHtml = `<div class="grid grid-cols-2 gap-3">` +
+                    kegiatan.photos.map(photo => 
+                        `<img src="/storage/${photo}" alt="Dokumentasi Kegiatan" class="w-full h-32 object-cover rounded-lg border border-gray-300 cursor-pointer" onclick="window.open('/storage/${photo}', '_blank')">`
+                    ).join('') +
+                    `</div>`;
+            } else if (kegiatan.foto) {
+                fotoHtml = `<img src="/storage/${kegiatan.foto}" alt="Dokumentasi Kegiatan" class="w-full h-auto rounded-lg border border-gray-300">`;
+            } else {
+                fotoHtml = `<p class="text-sm text-gray-400 italic">Tidak ada foto dokumentasi</p>`;
+            }
+
             const html = `
-                <div class="space-y-6">
-                    <div class="bg-primary-50 border-l-4 border-primary-500 p-4 rounded">
-                        <p class="text-xs text-gray-500">Tema Kegiatan</p>
-                        <p class="font-bold text-lg text-gray-900">${kegiatan.tema}</p>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-gray-50 p-4 rounded">
-                            <p class="text-xs text-gray-500">Nama Kegiatan</p>
-                            <p class="font-semibold text-gray-900">${kegiatan.nama_kegiatan}</p>
+                <div class="space-y-3">
+                    <!-- Informasi Pengguna & Daerah -->
+                    <div class="space-y-2 pb-3 border-b border-gray-200">
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium">👤 Nama User</p>
+                            <p class="text-sm font-semibold text-gray-900">${kegiatan.user_name}</p>
                         </div>
-                        <div class="bg-gray-50 p-4 rounded">
-                            <p class="text-xs text-gray-500">Tanggal Pelaksanaan</p>
-                            <p class="font-semibold text-gray-900">${kegiatan.tanggal_pelaksanaan}</p>
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium">🗺️ Daerah</p>
+                            <p class="text-sm font-semibold text-gray-900">${kegiatan.daerah_label}</p>
                         </div>
-                        <div class="bg-gray-50 p-4 rounded">
-                            <p class="text-xs text-gray-500">Nama User</p>
-                            <p class="font-semibold text-gray-900">${kegiatan.user_name}</p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded">
-                            <p class="text-xs text-gray-500">Bidang</p>
-                            <p class="font-semibold text-gray-900">${kegiatan.bidang}</p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded">
-                            <p class="text-xs text-gray-500">Pelaksana</p>
-                            <p class="font-semibold text-gray-900">${kegiatan.pelaksana}</p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded">
-                            <p class="text-xs text-gray-500">Jumlah Peserta</p>
-                            <p class="font-semibold text-gray-900">${new Intl.NumberFormat('id-ID').format(kegiatan.jumlah_peserta)} orang</p>
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium">📅 Tanggal Pengisian</p>
+                            <p class="text-sm font-semibold text-gray-900">${kegiatan.tanggal_pengisian}</p>
                         </div>
                     </div>
 
-                    <div class="bg-gray-50 p-4 rounded">
-                        <p class="text-xs text-gray-500">Anggaran</p>
-                        <p class="font-bold text-lg text-gray-900">Rp ${new Intl.NumberFormat('id-ID').format(kegiatan.anggaran)}</p>
+                    <!-- Tema -->
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">📌 Tema Kegiatan</p>
+                        <p class="text-2xl font-bold text-gray-900">${kegiatan.tema}</p>
                     </div>
 
-                    <div class="bg-gray-50 p-4 rounded">
-                        <p class="text-xs text-gray-500">Keterangan / Uraian</p>
-                        <div class="whitespace-pre-line text-sm text-gray-700 mt-2">${kegiatan.uraian}</div>
+                    <!-- Detail Kegiatan Grid -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">🎯 Nama Kegiatan</p>
+                            <p class="text-base font-bold text-gray-900">${kegiatan.nama_kegiatan}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">📅 Tanggal Pelaksanaan</p>
+                            <p class="text-base font-bold text-gray-900">${kegiatan.tanggal_pelaksanaan}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">🏛️ Bidang</p>
+                            <p class="text-base font-bold text-gray-900">${kegiatan.bidang}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">👥 Pelaksana</p>
+                            <p class="text-base font-bold text-gray-900">${kegiatan.pelaksana}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">👫 Jumlah Peserta</p>
+                            <p class="text-base font-bold text-gray-900">${new Intl.NumberFormat('id-ID').format(kegiatan.jumlah_peserta)} orang</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">💰 Anggaran</p>
+                            <p class="text-lg font-bold text-gray-900">Rp ${new Intl.NumberFormat('id-ID').format(kegiatan.anggaran)}</p>
+                        </div>
+                    </div>
+
+                    <!-- Foto Dokumentasi -->
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium mb-2">📸 Foto Dokumentasi</p>
+                        ${fotoHtml}
+                    </div>
+
+                    <!-- Keterangan -->
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium mb-1">📝 Keterangan / Uraian</p>
+                        <div class="whitespace-pre-line text-base text-gray-700 bg-gray-50 p-3 rounded">${kegiatan.keterangan}</div>
                     </div>
                 </div>
             `;

@@ -44,6 +44,7 @@ class KegiatanStoreRequest extends FormRequest
                 'pelaksana' => isset($row['pelaksana']) ? trim((string) $row['pelaksana']) : '',
                 'jumlah_peserta' => $toDigits($row['jumlah_peserta'] ?? null),
                 'anggaran' => $toDigits($row['anggaran'] ?? null),
+                'keterangan' => isset($row['keterangan']) ? trim((string) $row['keterangan']) : '',
             ];
         }
 
@@ -64,6 +65,8 @@ class KegiatanStoreRequest extends FormRequest
             'kegiatan.*.pelaksana' => ['required', 'string', 'max:255'],
             'kegiatan.*.jumlah_peserta' => ['required', 'integer', 'min:0'],
             'kegiatan.*.anggaran' => ['required', 'integer', 'min:0'],
+            'kegiatan.*.keterangan' => ['nullable', 'string', 'max:1000'],
+            'kegiatan_foto.*.*' => ['nullable', 'image', 'max:5120'], // max 5MB per file
         ];
     }
 

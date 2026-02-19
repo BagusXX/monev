@@ -1,25 +1,18 @@
 <nav class="bg-white border-b border-gray-200 shadow-sm">
     <div class="px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-            <!-- Mobile menu button -->
-            <button @click="$dispatch('sidebar-toggle')" aria-label="Toggle sidebar" aria-controls="sidebar" class="lg:hidden text-gray-600 hover:text-gray-900 p-2 rounded-md">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-            
+        <div class="flex justify-between items-center h-12 sm:h-16">
             <div class="flex-1"></div>
             
             <!-- Settings Dropdown -->
-            <div class="flex items-center">
+            <div class="flex items-center hidden sm:flex">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none transition ease-in-out duration-150">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white text-sm font-semibold mr-2 shadow-md">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white text-sm font-semibold shadow-md">
                                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                 </div>
-                                <div class="text-gray-900 font-medium">{{ Auth::user()->name }}</div>
+                                <div class="text-gray-900 font-medium hidden sm:block">{{ Auth::user()->name }}</div>
                             </div>
 
                             <div class="ms-2">
@@ -31,6 +24,11 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <div class="px-4 py-3 border-b border-gray-100 sm:hidden">
+                            <p class="text-sm font-semibold text-gray-900">{{ Auth::user()->name }}</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ Auth::user()->email ?? '' }}</p>
+                        </div>
+
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>

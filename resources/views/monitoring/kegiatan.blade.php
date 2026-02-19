@@ -87,7 +87,7 @@
                 </div>
                 {{-- Form dibungkus dan disembunyikan jika $showForm false --}}
                 <div id="form-wrapper" class="transition-all duration-300 {{ $showForm ? '' : 'hidden' }}">
-                    <form method="POST" action="{{ route('monitoring.kegiatan.store') }}" class="space-y-4" id="form-kegiatan">
+                    <form method="POST" action="{{ route('monitoring.kegiatan.store') }}" class="space-y-4" id="form-kegiatan" enctype="multipart/form-data">
                         @csrf
 
                         <div id="kegiatan-rows" class="space-y-5">
@@ -144,6 +144,20 @@
                                             <input type="number" name="kegiatan[{{ $idx }}][anggaran]" value="{{ $row['anggaran'] ?? 0 }}" min="0" required
                                                 class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
                                                 placeholder="Contoh: 2500000" />
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label class="text-sm font-semibold text-gray-700 block mb-2">� Keterangan (opsional)</label>
+                                            <textarea name="kegiatan[{{ $idx }}][keterangan]" rows="3"
+                                                class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition resize-none"
+                                                placeholder="Catatan atau deskripsi tambahan tentang kegiatan..."></textarea>
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label class="text-sm font-semibold text-gray-700 block mb-2">�📸 Foto Kegiatan (opsional)</label>
+                                            <div class="relative">
+                                                <input type="file" name="kegiatan_foto[{{ $idx }}][]" accept="image/*" multiple
+                                                    class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition file:mr-3 file:py-1 file:px-3 file:rounded file:bg-yellow-100 file:text-yellow-700 file:font-semibold file:cursor-pointer" />
+                                                <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG. Max: 5MB per file. Bisa upload beberapa file sekaligus.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -225,6 +239,20 @@
                         class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition"
                         placeholder="Contoh: 2500000" />
                 </div>
+                <div class="md:col-span-2">
+                    <label class="text-sm font-semibold text-gray-700 block mb-2">� Keterangan (opsional)</label>
+                    <textarea name="kegiatan[__IDX__][keterangan]" rows="3"
+                        class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition resize-none"
+                        placeholder="Catatan atau deskripsi tambahan tentang kegiatan..."></textarea>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="text-sm font-semibold text-gray-700 block mb-2">�📸 Foto Kegiatan (opsional)</label>
+                    <div class="relative">
+                        <input type="file" name="kegiatan_foto[__IDX__][]" accept="image/*" multiple
+                            class="w-full px-4 py-2.5 rounded-lg border-2 border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition file:mr-3 file:py-1 file:px-3 file:rounded file:bg-yellow-100 file:text-yellow-700 file:font-semibold file:cursor-pointer" />
+                        <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG. Max: 5MB per file. Bisa upload beberapa file sekaligus.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </template>
@@ -261,10 +289,16 @@
 
             function reindexNames() {
                 container.querySelectorAll('.kegiatan-row').forEach((row, i) => {
-                    row.querySelectorAll('[name^="kegiatan["]').forEach(input => {
+                    row.querySelectorAll('[name^="kegiatan["], [name^="kegiatan_foto["]').forEach(input => {
                         const name = input.getAttribute('name');
-                        const match = name.match(/^kegiatan\[\d+\](.+)$/);
-                        if (match) input.setAttribute('name', 'kegiatan[' + i + ']' + match[1]);
+                        const match = name.match(/^kegiatan\[\d+\](.+)$/) || name.match(/^kegiatan_foto\[\d+\]$/);
+                        if (match) {
+                            if (name.startsWith('kegiatan_foto')) {
+                                input.setAttribute('name', 'kegiatan_foto[' + i + ']');
+                            } else {
+                                input.setAttribute('name', 'kegiatan[' + i + ']' + match[1]);
+                            }
+                        }
                     });
                 });
             }

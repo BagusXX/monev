@@ -13,40 +13,28 @@
     <div class="py-8 bg-gradient-to-br from-primary-50 via-primary-50 to-primary-100 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-6">
-                <div class="bg-gradient-to-br from-primary-500 to-primary-600 overflow-hidden shadow-lg sm:rounded-xl border-2 border-primary-400 hover:shadow-2xl hover:scale-105 transition-all duration-200 text-white">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-medium text-primary-100">👥 Total Users</p>
-                                <p class="text-3xl font-bold text-white mt-2">1,234</p>
-                                <p class="text-xs text-primary-100 mt-2">+12.5% dari bulan lalu</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-6">
                 <div class="bg-gradient-to-br from-green-500 to-emerald-600 overflow-hidden shadow-lg sm:rounded-xl border-2 border-green-400 hover:shadow-2xl hover:scale-105 transition-all duration-200 text-white">
                     <div class="p-6">
                         <p class="text-sm font-medium text-green-100">🏘️ Total Kecamatan</p>
-                        <p class="text-3xl font-bold text-white mt-2">45</p>
-                        <p class="text-xs text-green-100 mt-2">+5 dari bulan lalu</p>
+                        <p class="text-3xl font-bold text-white mt-2">{{ $kecamatanCount ?? 576 }}</p>
+                        <p class="text-xs text-green-100 mt-2">Jumlah kecamatan di Jawa Tengah</p>
                     </div>
                 </div>
 
                 <div class="bg-gradient-to-br from-purple-500 to-violet-600 overflow-hidden shadow-lg sm:rounded-xl border-2 border-purple-400 hover:shadow-2xl hover:scale-105 transition-all duration-200 text-white">
                     <div class="p-6">
                         <p class="text-sm font-medium text-purple-100">📍 Total Kelurahan</p>
-                        <p class="text-3xl font-bold text-white mt-2">128</p>
-                        <p class="text-xs text-purple-100 mt-2">+8 dari bulan lalu</p>
+                        <p class="text-3xl font-bold text-white mt-2">{{ $kelurahanCount ?? 8560 }}</p>
+                        <p class="text-xs text-purple-100 mt-2">Jumlah kelurahan di Jawa Tengah</p>
                     </div>
                 </div>
 
                 <div class="bg-gradient-to-br from-orange-500 to-red-600 overflow-hidden shadow-lg sm:rounded-xl border-2 border-orange-400 hover:shadow-2xl hover:scale-105 transition-all duration-200 text-white">
                     <div class="p-6">
-                        <p class="text-sm font-medium text-orange-100">📊 Total Kegiatan</p>
-                        <p class="text-3xl font-bold text-white mt-2">892</p>
-                        <p class="text-xs text-orange-100 mt-2">+23.1% dari bulan lalu</p>
+                        <p class="text-sm font-medium text-orange-100">📊 Total Kegiatan (Bulan Ini)</p>
+                        <p class="text-3xl font-bold text-white mt-2">{{ $kegiatanCount ?? 0 }}</p>
+                        <p class="text-xs text-orange-100 mt-2">Data kegiatan untuk bulan berjalan</p>
                     </div>
                 </div>
             </div>
@@ -61,28 +49,7 @@
                                 <p class="text-sm text-purple-200 mt-2 font-semibold">Visualisasi wilayah administrasi seluruh Provinsi Jawa Tengah</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-6 pt-4 border-t border-purple-400 flex-wrap">
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-red-500 shadow-md"></span>
-                                <span class="text-xs text-purple-100 font-semibold">Jateng Utara</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-primary-500 shadow-md"></span>
-                                <span class="text-xs text-purple-100 font-semibold">Jateng Barat</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-md"></span>
-                                <span class="text-xs text-purple-100 font-semibold">Jateng Tengah</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-primary-500 shadow-md"></span>
-                                <span class="text-xs text-purple-100 font-semibold">Jateng Timur</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-primary-500 shadow-md"></span>
-                                <span class="text-xs text-purple-100 font-semibold">Jateng Selatan</span>
-                            </div>
-                        </div>
+                        <!-- Legend removed as requested -->
                     </div>
                     <div class="p-7 bg-gradient-to-br from-gray-50 to-primary-50">
                         <div class="rounded-xl overflow-hidden border-4 border-gradient-to-r from-purple-400 to-pink-400 shadow-2xl">

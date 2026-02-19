@@ -50,12 +50,12 @@
                         @enderror
                     </div>
 
-                    <!-- Action Buttons -->
-                    <div class="flex justify-between gap-4 pt-6 border-t-2 border-gray-200">
-                        <a href="{{ route('daerah.index') }}" class="inline-flex items-center gap-2 px-6 py-2.5 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition font-bold text-sm">
+                    <!-- Action Buttons (mobile-friendly) -->
+                    <div class="flex flex-col sm:flex-row justify-between gap-4 pt-6 border-t-2 border-gray-200">
+                        <a href="{{ route('daerah.index') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition font-bold text-sm">
                             <span>⬅️</span> Kembali
                         </a>
-                        <button type="submit" class="inline-flex items-center gap-2 px-7 py-2.5 bg-gradient-to-r from-primary-600 to-primary-600 text-white rounded-lg hover:shadow-lg transition font-bold text-sm">
+                        <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-600 text-white rounded-lg hover:shadow-lg transition font-bold text-sm">
                             <span>✅</span> Update Daerah
                         </button>
                     </div>

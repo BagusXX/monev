@@ -22,7 +22,12 @@ Route::middleware('auth')->group(function () {
 
     // Home/Dashboard
     Route::get('/home', function () {
-        return view('home');
+        $kecamatanCount = 576; // fixed value for Jawa Tengah
+        $kelurahanCount = 8560; // fixed value for Jawa Tengah
+        $bulan = \Carbon\Carbon::now()->format('Y-m');
+        $kegiatanCount = \App\Models\Kegiatan::where('bulan', $bulan)->count();
+
+        return view('home', compact('kecamatanCount', 'kelurahanCount', 'kegiatanCount'));
     })->name('home');
 
     // Setup
@@ -44,6 +49,10 @@ Route::middleware('auth')->group(function () {
         ->name('monitoring.kegiatan.store');
     Route::delete('/monitoring/kegiatan/{kegiatan}', [MonitoringKegiatanController::class, 'destroy'])
         ->name('monitoring.kegiatan.destroy');
+
+    // Monitoring Rapat (add delete action)
+    Route::delete('/monitoring/rapat/{rapat}', [MonitoringRapatController::class, 'destroy'])
+        ->name('monitoring.rapat.destroy');
 
     // Laporan Kegiatan
     Route::get('/laporan/kegiatan', [LaporanKegiatanController::class, 'index'])

@@ -41,7 +41,7 @@ class MonitoringRapatController extends Controller
         }
 
         // Normalisasi uraian: kosong -> null
-        foreach (['uraian_dptd', 'uraian_phdpd', 'uraian_pimpinan', 'uraian_bidang', 'uraian_kpd', 'uraian_dewan', 'uraian_pks'] as $key) {
+        foreach (['uraian_dptd', 'uraian_phdpd', 'uraian_pimpinan', 'uraian_bidang', 'uraian_kdd', 'uraian_pks'] as $key) {
             if (!isset($data[$key]) || $data[$key] === '') {
                 $data[$key] = null;
             }
@@ -52,6 +52,14 @@ class MonitoringRapatController extends Controller
         return redirect()
             ->route('laporan.rapat', ['bulan' => $data['bulan']])
             ->with('success', 'Monitoring rapat berhasil disimpan dan masuk ke laporan.');
+    }
+
+    public function destroy(Rapat $rapat): RedirectResponse
+    {
+        $bulan = $rapat->bulan;
+        $rapat->delete();
+
+        return redirect()->back()->with('success', 'Rapat berhasil dihapus.');
     }
 }
 

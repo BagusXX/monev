@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class MonitoringKegiatanController extends Controller
 {
@@ -40,11 +41,12 @@ class MonitoringKegiatanController extends Controller
     {
         $rows = $request->validated('kegiatan');
         $userId = $request->user()->id;
+        $files = $request->file('kegiatan_foto') ?? [];
 
         $savedCount = 0;
         $firstBulan = null;
 
-        foreach ($rows as $row) {
+        foreach ($rows as $index => $row) {
             // Pastikan tanggal lengkap (input date => YYYY-MM-DD)
             try {
                 $dt = Carbon::createFromFormat('Y-m-d', $row['tanggal_pelaksanaan']);
@@ -59,7 +61,8 @@ class MonitoringKegiatanController extends Controller
                 $firstBulan = $bulanForRow;
             }
 
-            Kegiatan::create([
+            // Create kegiatan
+            $kegiatan = Kegiatan::create([
                 'bulan' => $bulanForRow,
                 'user_id' => $userId,
                 'tema' => $row['tema'],
@@ -69,7 +72,25 @@ class MonitoringKegiatanController extends Controller
                 'pelaksana' => $row['pelaksana'],
                 'jumlah_peserta' => (int) ($row['jumlah_peserta'] ?? 0),
                 'anggaran' => (int) ($row['anggaran'] ?? 0),
+                'keterangan' => $row['keterangan'] ?? null,
             ]);
+
+            // Handle multiple file uploads for this kegiatan
+            if (isset($files[$index]) && is_array($files[$index])) {
+                foreach ($files[$index] as $file) {
+                    if ($file && $file->isValid()) {
+                        // Store file to storage/app/public/kegiatan
+                        $fotoPath = $file->store('kegiatan', 'public');
+                        // Ensure forward slashes for the path (fixes Windows paths)
+                        $fotoPath = str_replace('\\', '/', $fotoPath);
+                        
+                        // Save to kegiatan_photos table
+                        $kegiatan->photos()->create([
+                            'foto_path' => $fotoPath,
+                        ]);
+                    }
+                }
+            }
 
             $savedCount++;
         }
@@ -90,10 +111,14 @@ class MonitoringKegiatanController extends Controller
     public function destroy(Kegiatan $kegiatan): RedirectResponse
     {
         $bulan = $kegiatan->bulan;
+        
+        // Delete associated photo if exists
+        if ($kegiatan->foto && Storage::disk('public')->exists($kegiatan->foto)) {
+            Storage::disk('public')->delete($kegiatan->foto);
+        }
+        
         $kegiatan->delete();
 
-        return redirect()
-            ->route('monitoring.kegiatan', ['bulan' => $bulan])
-            ->with('success', 'Kegiatan berhasil dihapus.');
+        return redirect()->back()->with('success', 'Kegiatan berhasil dihapus.');
     }
 }
