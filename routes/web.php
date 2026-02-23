@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RencanaKegiatanController;
 use App\Http\Controllers\MonitoringKegiatanController;
 use App\Http\Controllers\LaporanKegiatanController;
 use App\Http\Controllers\KotaController;
@@ -42,11 +43,33 @@ Route::middleware('auth')->group(function () {
     Route::get('/monitor', [MonitoringRapatController::class, 'index'])->name('monitor');
     Route::post('/monitor', [MonitoringRapatController::class, 'store'])->name('monitor.store');
 
-    // Monitoring Kegiatan
+    // Rencana Kegiatan (Planning Phase)
+    Route::get('/rencana/kegiatan', [RencanaKegiatanController::class, 'index'])
+        ->name('rencana.index');
+    Route::get('/rencana/kegiatan/create', [RencanaKegiatanController::class, 'create'])
+        ->name('rencana.create');
+    Route::post('/rencana/kegiatan', [RencanaKegiatanController::class, 'store'])
+        ->name('rencana.store');
+    Route::get('/rencana/kegiatan/{rencana}/edit', [RencanaKegiatanController::class, 'edit'])
+        ->name('rencana.edit');
+    Route::patch('/rencana/kegiatan/{rencana}', [RencanaKegiatanController::class, 'update'])
+        ->name('rencana.update');
+    Route::patch('/rencana/kegiatan/{rencana}/mark-as-ready', [RencanaKegiatanController::class, 'markAsReady'])
+        ->name('rencana.markAsReady');
+    Route::delete('/rencana/kegiatan/{rencana}', [RencanaKegiatanController::class, 'destroy'])
+        ->name('rencana.destroy');
+
+    // Monitoring Kegiatan (Realisasi Phase)
     Route::get('/monitoring/kegiatan', [MonitoringKegiatanController::class, 'index'])
         ->name('monitoring.kegiatan');
     Route::post('/monitoring/kegiatan', [MonitoringKegiatanController::class, 'store'])
         ->name('monitoring.kegiatan.store');
+    Route::patch('/monitoring/kegiatan/{kegiatan}/mark-as-realized', [MonitoringKegiatanController::class, 'markAsRealized'])
+        ->name('monitoring.kegiatan.markAsRealized');
+    Route::post('/monitoring/kegiatan/{kegiatan}/upload-photo', [MonitoringKegiatanController::class, 'uploadPhoto'])
+        ->name('monitoring.kegiatan.uploadPhoto');
+    Route::delete('/monitoring/kegiatan/photo/{photoId}', [MonitoringKegiatanController::class, 'deletePhoto'])
+        ->name('monitoring.kegiatan.deletePhoto');
     Route::delete('/monitoring/kegiatan/{kegiatan}', [MonitoringKegiatanController::class, 'destroy'])
         ->name('monitoring.kegiatan.destroy');
 

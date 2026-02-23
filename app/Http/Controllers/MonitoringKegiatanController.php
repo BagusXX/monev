@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Storage;
 
 class MonitoringKegiatanController extends Controller
 {
+    /**
+     * Tampilkan kegiatan dalam fase realisasi (setelah rencana ditandai ✓)
+     */
     public function index(Request $request): View
     {
         $bulan = $request->query('bulan');
@@ -19,8 +22,11 @@ class MonitoringKegiatanController extends Controller
             $bulan = Carbon::now()->format('Y-m');
         }
 
+        // Tampilkan hanya kegiatan dengan status 'realisasi' (sudah ditandai dari rencana)
         $kegiatans = Kegiatan::query()
             ->where('bulan', $bulan)
+            ->where('status', 'realisasi')
+            ->where('user_id', $request->user()->id)
             ->latest()
             ->paginate(10)
             ->withQueryString();
@@ -35,6 +41,101 @@ class MonitoringKegiatanController extends Controller
         }
 
         return view('monitoring.kegiatan', compact('bulan', 'bulanLabel', 'kegiatans'));
+    }
+
+    /**
+     * Tandai kegiatan sebagai sudah terealisasi (set is_realized = true, tetap di realisasi)
+     */
+    public function markAsRealized(Kegiatan $kegiatan, Request $request): RedirectResponse
+    {
+        // Pastikan user hanya bisa mengubah miliknya sendiri
+        if ($kegiatan->user_id !== $request->user()->id) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke kegiatan ini.');
+        }
+
+        // Pastikan status masih realisasi
+        if ($kegiatan->status !== 'realisasi') {
+            return redirect()->back()->with('warning', 'Kegiatan ini sudah diproses atau belum dalam fase realisasi.');
+        }
+
+        // Update hanya is_realized dan realized_at, TIDAK mengubah status
+        $kegiatan->update([
+            'is_realized' => true,
+            'realized_at' => now(),
+        ]);
+
+        return redirect()->back()
+            ->with('success', '✓ Kegiatan ditandai terealisasi! Anda dapat upload foto atau lanjut ke Laporan Kegiatan.');
+    }
+
+    /**
+     * Upload foto untuk kegiatan yang sudah ditandai terealisasi
+     */
+    public function uploadPhoto(Kegiatan $kegiatan, Request $request): RedirectResponse
+    {
+        // Pastikan user hanya bisa upload foto miliknya sendiri
+        if ($kegiatan->user_id !== $request->user()->id) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke kegiatan ini.');
+        }
+
+        // Pastikan kegiatan sudah terealizasi (opsional - bisa sebelum ditandai terealisasi)
+        if (!$kegiatan->is_realized) {
+            return redirect()->back()->with('warning', 'Harap tandai kegiatan sebagai terealisasi terlebih dahulu untuk menambah foto.');
+        }
+
+        $request->validate([
+            'fotos' => 'required|array|min:1',
+            'fotos.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120', // max 5MB per file
+        ]);
+
+        $files = $request->file('fotos') ?? [];
+        $uploadedCount = 0;
+
+        foreach ($files as $file) {
+            if ($file && $file->isValid()) {
+                // Store file to storage/app/public/kegiatan
+                $fotoPath = $file->store('kegiatan', 'public');
+                // Ensure forward slashes for the path (fixes Windows paths)
+                $fotoPath = str_replace('\\', '/', $fotoPath);
+                
+                // Save to kegiatan_photos table
+                $kegiatan->photos()->create([
+                    'foto_path' => $fotoPath,
+                ]);
+                
+                $uploadedCount++;
+            }
+        }
+
+        $msg = $uploadedCount === 1
+            ? 'Foto berhasil diunggah.'
+            : "{$uploadedCount} foto berhasil diunggah.";
+
+        return redirect()->back()->with('success', $msg);
+    }
+
+    /**
+     * Hapus foto kegiatan
+     */
+    public function deletePhoto($photoId, Request $request): RedirectResponse
+    {
+        // Import KegiatanPhoto model
+        $photo = \App\Models\KegiatanPhoto::findOrFail($photoId);
+        $kegiatan = $photo->kegiatan;
+
+        // Pastikan user hanya bisa menghapus miliknya sendiri
+        if ($kegiatan->user_id !== $request->user()->id) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke foto ini.');
+        }
+
+        // Delete file dari storage jika ada
+        if ($photo->foto_path && Storage::disk('public')->exists($photo->foto_path)) {
+            Storage::disk('public')->delete($photo->foto_path);
+        }
+
+        $photo->delete();
+
+        return redirect()->back()->with('success', 'Foto berhasil dihapus.');
     }
 
     public function store(KegiatanStoreRequest $request): RedirectResponse
@@ -112,9 +213,14 @@ class MonitoringKegiatanController extends Controller
     {
         $bulan = $kegiatan->bulan;
         
-        // Delete associated photo if exists
-        if ($kegiatan->foto && Storage::disk('public')->exists($kegiatan->foto)) {
-            Storage::disk('public')->delete($kegiatan->foto);
+        // Delete associated photos if exist
+        if ($kegiatan->photos && $kegiatan->photos->count() > 0) {
+            foreach ($kegiatan->photos as $photo) {
+                if ($photo->foto_path && Storage::disk('public')->exists($photo->foto_path)) {
+                    Storage::disk('public')->delete($photo->foto_path);
+                }
+                $photo->delete();
+            }
         }
         
         $kegiatan->delete();

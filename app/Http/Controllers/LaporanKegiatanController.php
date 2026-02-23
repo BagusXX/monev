@@ -19,7 +19,9 @@ class LaporanKegiatanController extends Controller
 
         $daerahId = $request->query('daerah');
 
-        $baseQuery = Kegiatan::query()->where('bulan', $bulan);
+        $baseQuery = Kegiatan::query()
+            ->where('bulan', $bulan)
+            ->where('is_realized', true);  // Hanya tampilkan kegiatan yang sudah terealisasi
 
         if ($daerahId && is_numeric($daerahId)) {
             $baseQuery->whereHas('user', function ($q) use ($daerahId) {

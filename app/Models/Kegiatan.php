@@ -15,6 +15,10 @@ class Kegiatan extends Model
     protected $fillable = [
         'bulan',
         'user_id',
+        'status',
+        'rencana_kegiatan',
+        'is_realized',
+        'realized_at',
         'tema',
         'bidang',
         'tanggal_pelaksanaan',
@@ -28,6 +32,7 @@ class Kegiatan extends Model
 
     protected $casts = [
         'tanggal_pelaksanaan' => 'date',
+        'realized_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
